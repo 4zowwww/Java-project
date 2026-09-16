@@ -1,0 +1,189 @@
+<mxGraphModel dx="1422" dy="794" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <mxCell id="title" value="Μοντέλο Οντοτήτων-Σχέσεων — Βάση δεδομένων γραμματείας (studentapp_db)" style="text;html=1;align=center;verticalAlign=middle;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="360" y="10" width="640" height="30" as="geometry" />
+    </mxCell>
+
+    <mxCell id="users" value="users" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;html=1;whiteSpace=wrap;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+      <mxGeometry x="530" y="60" width="300" height="202" as="geometry" />
+    </mxCell>
+    <mxCell id="users_f0" value="PK  id : BIGSERIAL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="users">
+      <mxGeometry y="26" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="users_f1" value="U    username : VARCHAR(50)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="users">
+      <mxGeometry y="48" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="users_f2" value="      password_hash : VARCHAR(100)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="users">
+      <mxGeometry y="70" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="users_f2b" value="      salt : VARCHAR(50)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="users">
+      <mxGeometry y="92" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="users_f3" value="      name : VARCHAR(50)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="users">
+      <mxGeometry y="114" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="users_f4" value="      surname : VARCHAR(50)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="users">
+      <mxGeometry y="136" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="users_f5" value="FK  department_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="users">
+      <mxGeometry y="158" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="users_f6" value="      role : VARCHAR(20)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="users">
+      <mxGeometry y="180" width="300" height="22" as="geometry" />
+    </mxCell>
+
+    <mxCell id="students" value="students" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+      <mxGeometry x="120" y="320" width="300" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="students_f0" value="PK,FK  user_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="students">
+      <mxGeometry y="26" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="students_f1" value="U        registration_number : INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="students">
+      <mxGeometry y="48" width="300" height="22" as="geometry" />
+    </mxCell>
+
+    <mxCell id="professors" value="professors" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+      <mxGeometry x="530" y="320" width="300" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="professors_f0" value="PK,FK  user_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="professors">
+      <mxGeometry y="26" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="professors_f1" value="U        professor_id : VARCHAR(20)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="professors">
+      <mxGeometry y="48" width="300" height="22" as="geometry" />
+    </mxCell>
+
+    <mxCell id="secretaries" value="secretaries" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;html=1;whiteSpace=wrap;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+      <mxGeometry x="940" y="320" width="300" height="70" as="geometry" />
+    </mxCell>
+    <mxCell id="secretaries_f0" value="PK,FK  user_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="secretaries">
+      <mxGeometry y="26" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="secretaries_f1" value="U        employee_number : VARCHAR(20)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="secretaries">
+      <mxGeometry y="48" width="300" height="22" as="geometry" />
+    </mxCell>
+
+    <mxCell id="courses" value="courses" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;html=1;whiteSpace=wrap;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+      <mxGeometry x="530" y="500" width="300" height="180" as="geometry" />
+    </mxCell>
+    <mxCell id="courses_f0" value="PK  id : BIGSERIAL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="courses">
+      <mxGeometry y="26" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="courses_f1" value="U    course_code : VARCHAR(20)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="courses">
+      <mxGeometry y="48" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="courses_f2" value="      course_name : VARCHAR(150)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="courses">
+      <mxGeometry y="70" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="courses_f3" value="      ects : INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="courses">
+      <mxGeometry y="92" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="courses_f3b" value="      semester : INTEGER" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="courses">
+      <mxGeometry y="114" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="courses_f35" value="FK  department_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="courses">
+      <mxGeometry y="136" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="courses_f4" value="FK  professor_user_id : BIGINT  NULL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="courses">
+      <mxGeometry y="158" width="300" height="22" as="geometry" />
+    </mxCell>
+
+    <mxCell id="enrollments" value="enrollments" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;html=1;whiteSpace=wrap;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+      <mxGeometry x="120" y="520" width="300" height="92" as="geometry" />
+    </mxCell>
+    <mxCell id="enrollments_f0" value="PK,FK  student_user_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="enrollments">
+      <mxGeometry y="26" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="enrollments_f1" value="PK,FK  course_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="enrollments">
+      <mxGeometry y="48" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="enrollments_f2" value="          enrolled_on : DATE" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="enrollments">
+      <mxGeometry y="70" width="300" height="22" as="geometry" />
+    </mxCell>
+
+    <mxCell id="grades" value="grades" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;html=1;whiteSpace=wrap;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+      <mxGeometry x="940" y="500" width="300" height="136" as="geometry" />
+    </mxCell>
+    <mxCell id="grades_f0" value="PK  id : BIGSERIAL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="grades">
+      <mxGeometry y="26" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="grades_f1" value="FK  student_user_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="grades">
+      <mxGeometry y="48" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="grades_f2" value="FK  course_id : BIGINT" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="grades">
+      <mxGeometry y="70" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="grades_f3" value="      grade_value : NUMERIC(4,2)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="grades">
+      <mxGeometry y="92" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="grades_f4" value="      graded_on : DATE" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="grades">
+      <mxGeometry y="114" width="300" height="22" as="geometry" />
+    </mxCell>
+
+    <mxCell id="e_students_users" value="1 : 0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="students" target="users">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_professors_users" value="1 : 0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="professors" target="users">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_secretaries_users" value="1 : 0..1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="secretaries" target="users">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="e_courses_professors" value="διδάσκει   1 : 0..N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=none;endArrow=ERmany;endFill=0;" edge="1" parent="1" source="courses" target="professors">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="e_enr_students" value="1 : 0..N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="enrollments" target="students">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_enr_courses" value="1 : 0..N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="enrollments" target="courses">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="e_grades_students" value="1 : 0..N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="grades" target="students">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="1090" y="440" />
+          <mxPoint x="460" y="440" />
+          <mxPoint x="460" y="355" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+    <mxCell id="e_grades_courses" value="1 : 0..N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="grades" target="courses">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <mxCell id="departments" value="departments" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;html=1;whiteSpace=wrap;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+      <mxGeometry x="120" y="60" width="300" height="92" as="geometry" />
+    </mxCell>
+    <mxCell id="departments_f0" value="PK  id : BIGSERIAL" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;fontStyle=1" vertex="1" parent="departments">
+      <mxGeometry y="26" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="departments_f1" value="U    code : VARCHAR(10)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="departments">
+      <mxGeometry y="48" width="300" height="22" as="geometry" />
+    </mxCell>
+    <mxCell id="departments_f2" value="U    name : VARCHAR(100)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rotatable=0;whiteSpace=wrap;html=1;" vertex="1" parent="departments">
+      <mxGeometry y="70" width="300" height="22" as="geometry" />
+    </mxCell>
+
+    <mxCell id="e_users_departments" value="ανήκει   1 : 0..N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="users" target="departments">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_courses_departments" value="ανήκει   1 : 0..N" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;startArrow=none;endArrow=block;endFill=1;" edge="1" parent="1" source="courses" target="departments">
+      <mxGeometry relative="1" as="geometry">
+        <Array as="points">
+          <mxPoint x="480" y="579" />
+          <mxPoint x="270" y="579" />
+        </Array>
+      </mxGeometry>
+    </mxCell>
+
+    <mxCell id="legend" value="Υπόμνημα:  PK = πρωτεύον κλειδί,  FK = ξένο κλειδί,  U = μοναδική τιμή (UNIQUE)&#10;Οι πίνακες students / professors / secretaries μοιράζονται το κλειδί του users (κληρονομικότητα).&#10;Ο enrollments υλοποιεί τη σχέση πολλά-προς-πολλά Φοιτητές &lt;-&gt; Μαθήματα.&#10;Κάθε χρήστης και κάθε μάθημα ανήκουν σε ένα τμήμα (departments)." style="text;html=1;align=left;verticalAlign=top;fontSize=11;spacingLeft=6;spacingTop=4;fillColor=#f5f5f5;strokeColor=#999999;" vertex="1" parent="1">
+      <mxGeometry x="120" y="700" width="700" height="70" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>

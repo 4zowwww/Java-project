@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<title>Τεκμηρίωση Τελικής Εργασίας - Εφαρμογή Βαθμολογίου</title>
+<style>
+    @page { size: A4; margin: 16mm 16mm 18mm 16mm; }
+    * { box-sizing: border-box; }
+    body { font-family: "Segoe UI", Arial, sans-serif; font-size: 10pt; line-height: 1.45; color: #1a1a1a; margin: 0; }
+    h1 { font-size: 19pt; margin: 0 0 4pt; color: #12355b; }
+    h2 { font-size: 13pt; color: #12355b; border-bottom: 1.5pt solid #12355b; padding-bottom: 2pt; margin: 16pt 0 6pt; break-after: avoid; }
+    h3 { font-size: 11pt; color: #1f4e79; margin: 10pt 0 4pt; break-after: avoid; }
+    p { margin: 0 0 6pt; }
+    ul { margin: 0 0 6pt; padding-left: 16pt; }
+    li { margin-bottom: 2pt; }
+    code { font-family: Consolas, "Courier New", monospace; font-size: 8.8pt; background: #eef2f7; padding: 0 2pt; border-radius: 2pt; }
+    table { width: 100%; border-collapse: collapse; margin: 4pt 0 8pt; font-size: 9pt; }
+    th, td { border: 0.6pt solid #b7c3d0; padding: 3pt 5pt; text-align: left; vertical-align: top; }
+    th { background: #dfe8f2; color: #12355b; }
+    tr { break-inside: avoid; }
+    .cover { border: 1pt solid #b7c3d0; background: #f4f7fb; padding: 10pt 12pt; margin-bottom: 8pt; }
+    .cover .subtitle { font-size: 11pt; color: #1f4e79; margin-bottom: 8pt; }
+    .cover table { margin: 6pt 0 0; background: #fff; }
+    .note { background: #f4f7fb; border-left: 3pt solid #1f4e79; padding: 5pt 8pt; margin: 6pt 0 8pt; }
+    .diagram { margin: 6pt 0 8pt; text-align: center; break-inside: avoid; }
+    .two { display: flex; gap: 10pt; }
+    .two > div { flex: 1; }
+    .page-break { break-before: page; }
+    .keep { break-inside: avoid; }
+</style>
+</head>
+<body>
+
+<div class="cover">
+    <h1>Εφαρμογή Βαθμολογίου τριών επιπέδων (3-tier)</h1>
+    <div class="subtitle">Τεκμηρίωση Τελικής Εργασίας — Προγραμματισμός στο Διαδίκτυο και στον Παγκόσμιο Ιστό, Ακαδ. Έτος 2025-26</div>
+    <table>
+        <tr><th style="width:55%">Μέλη ομάδας (Ονοματεπώνυμο)</th><th>Αριθμός Μητρώου</th></tr>
+        <tr><td>ΔΑΝΙΗΛ ΞΙΑΡΗ</td><td>p24218</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+        <tr><td>&nbsp;</td><td>&nbsp;</td></tr>
+    </table>
+</div>
+
+<h2>1. Εισαγωγή</h2>
+<p>
+    Η εργασία επεκτείνει το web project της 2ης άσκησης σε μία ολοκληρωμένη εφαρμογή τριών επιπέδων για τη
+    διαχείριση βαθμολογίου. Υποστηρίζει τρεις κατηγορίες χρηστών — <b>Φοιτητές</b>, <b>Καθηγητές</b> και
+    <b>Γραμματεία</b> — με σύνδεση (login) για όλους, κρυπτογραφημένους κωδικούς, διαχείριση συνόδου και
+    αποθήκευση όλων των δεδομένων σε βάση δεδομένων.
+</p>
+<p>
+    Σύμφωνα με την υποσημείωση της 2ης άσκησης, η εφαρμογή υλοποιήθηκε ως <b>Spring Boot project</b> αντί για
+    Dynamic Web Project. Η αντιστοίχιση των servlet και των JSP σελίδων με τα αντίστοιχα στοιχεία του Spring Boot
+    περιγράφεται στην ενότητα 3.3.
+</p>
+
+<h2>2. Τεχνολογίες</h2>
+<table>
+    <tr><th style="width:28%">Επίπεδο / ρόλος</th><th>Τεχνολογία</th></tr>
+    <tr><td>Γλώσσα</td><td>Java 21</td></tr>
+    <tr><td>Application server</td><td>Spring Boot 4.1.1 (Spring MVC) με ενσωματωμένο Apache Tomcat</td></tr>
+    <tr><td>Επίπεδο προβολής</td><td>Δυναμικές HTML σελίδες με Thymeleaf (αντί για JSP), Pico CSS για την εμφάνιση</td></tr>
+    <tr><td>Βάση δεδομένων</td><td>PostgreSQL 16</td></tr>
+    <tr><td>Σύνδεση με τη βάση</td><td>JDBC (PostgreSQL JDBC driver) μέσω του Spring <code>JdbcTemplate</code></td></tr>
+    <tr><td>Κρυπτογράφηση κωδικών</td><td>PBKDF2-HmacSHA256 (ενσωματωμένο στη Java, χωρίς εξωτερική βιβλιοθήκη)</td></tr>
+    <tr><td>Εκτέλεση</td><td>Docker Compose (container για τη βάση και container για την εφαρμογή)</td></tr>
+</table>
+
+<h2>3. Αρχιτεκτονική</h2>
+
+<h3>3.1 Τα τρία επίπεδα (3-tier)</h3>
+<div class="diagram">
+<svg width="640" height="150" viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI, Arial" font-size="11">
+    <defs>
+        <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto">
+            <path d="M0,0 L8,4 L0,8 z" fill="#1f4e79"/>
+        </marker>
+    </defs>
+    <!-- Tier 1 -->
+    <rect x="5" y="20" width="160" height="110" rx="6" fill="#eef4fb" stroke="#1f4e79"/>
+    <text x="85" y="40" text-anchor="middle" font-weight="bold" fill="#12355b">1. Παρουσίαση</text>
+    <text x="85" y="62" text-anchor="middle">Browser</text>
+    <text x="85" y="80" text-anchor="middle">HTML σελίδες</text>
+    <text x="85" y="98" text-anchor="middle">&amp; φόρμες</text>
+    <!-- Tier 2 -->
+    <rect x="215" y="5" width="240" height="140" rx="6" fill="#f3f8ee" stroke="#4f7a28"/>
+    <text x="335" y="24" text-anchor="middle" font-weight="bold" fill="#2f5216">2. Εφαρμογή (Spring Boot / Tomcat)</text>
+    <rect x="235" y="34" width="200" height="24" rx="3" fill="#fff" stroke="#8fb36b"/>
+    <text x="335" y="50" text-anchor="middle">Controllers (ρόλος servlet)</text>
+    <rect x="235" y="66" width="200" height="24" rx="3" fill="#fff" stroke="#8fb36b"/>
+    <text x="335" y="82" text-anchor="middle">Services (λογική εφαρμογής)</text>
+    <rect x="235" y="98" width="200" height="24" rx="3" fill="#fff" stroke="#8fb36b"/>
+    <text x="335" y="114" text-anchor="middle">Repositories (SQL μέσω JDBC)</text>
+    <text x="335" y="138" text-anchor="middle" font-size="9.5" fill="#555">+ Thymeleaf: παράγει τις σελίδες</text>
+    <!-- Tier 3 -->
+    <rect x="505" y="20" width="130" height="110" rx="6" fill="#fdf3e7" stroke="#b36b00"/>
+    <text x="570" y="40" text-anchor="middle" font-weight="bold" fill="#7a4800">3. Δεδομένα</text>
+    <text x="570" y="66" text-anchor="middle">PostgreSQL</text>
+    <text x="570" y="84" text-anchor="middle">studentapp_db</text>
+    <!-- arrows -->
+    <line x1="167" y1="62" x2="212" y2="62" stroke="#1f4e79" stroke-width="1.4" marker-end="url(#arrow)"/>
+    <line x1="213" y1="92" x2="168" y2="92" stroke="#1f4e79" stroke-width="1.4" marker-end="url(#arrow)"/>
+    <text x="190" y="56" text-anchor="middle" font-size="9">HTTP</text>
+    <text x="190" y="106" text-anchor="middle" font-size="9">HTML</text>
+    <line x1="457" y1="75" x2="502" y2="75" stroke="#1f4e79" stroke-width="1.4" marker-end="url(#arrow)"/>
+    <text x="480" y="69" text-anchor="middle" font-size="9">JDBC</text>
+</svg>
+</div>
+<p>
+    Ο χρήστης στέλνει αιτήματα HTTP (GET/POST) από τον browser. Ο controller δέχεται την είσοδο, καλεί τα services,
+    τα οποία αναζητούν ή αποθηκεύουν δεδομένα στη βάση μέσω των repositories, και το αποτέλεσμα επιστρέφεται στον
+    χρήστη ως δυναμική HTML σελίδα.
+</p>
+
+<h3>3.2 Δομή του project</h3>
+<table>
+    <tr><th style="width:22%">Πακέτο</th><th style="width:36%">Ρόλος</th><th>Κλάσεις</th></tr>
+    <tr><td><code>model</code></td><td>Οι βασικές κλάσεις της 1ης άσκησης και βοηθητικές κλάσεις αποτελεσμάτων</td><td><code>Users</code>, <code>Students</code>, <code>Professors</code>, <code>Secretaries</code>, <code>Courses</code>, <code>Grades</code>, <code>GradeSummary</code>, <code>SemesterGrades</code></td></tr>
+    <tr><td><code>controller</code></td><td>Δέχονται τα αιτήματα των σελίδων (ρόλος servlet)</td><td><code>HomeController</code>, <code>AuthController</code>, <code>StudentController</code>, <code>ProfessorController</code>, <code>SecretaryController</code></td></tr>
+    <tr><td><code>service</code></td><td>Λογική και έλεγχοι της εφαρμογής</td><td><code>AuthService</code>, <code>PasswordService</code>, <code>CourseService</code>, <code>GradeService</code>, <code>ProfessorService</code></td></tr>
+    <tr><td><code>repository</code></td><td>Εντολές SQL προς τη βάση (JDBC)</td><td><code>UserRepository</code>, <code>CourseRepository</code>, <code>GradeRepository</code>, <code>ProfessorRepository</code></td></tr>
+    <tr><td><code>config</code></td><td>Ρυθμίσεις που εκτελούνται πριν από κάθε αίτημα</td><td><code>WebConfig</code>, <code>RoleInterceptor</code>, <code>NoCacheInterceptor</code></td></tr>
+    <tr><td><code>exception</code></td><td>Κεντρικός χειρισμός σφαλμάτων</td><td><code>GlobalExceptionHandler</code></td></tr>
+</table>
+
+<h3>3.3 Αντιστοίχιση Servlet / JSP με Spring Boot</h3>
+<table>
+    <tr><th style="width:42%">Dynamic Web Project (servlet &amp; JSP)</th><th>Υλοποίηση στο Spring Boot project</th></tr>
+    <tr><td>Servlet ανά κατηγορία χρήστη</td><td><code>StudentController</code>, <code>ProfessorController</code>, <code>SecretaryController</code> — εκτελούνται μέσω του <code>DispatcherServlet</code> του Spring</td></tr>
+    <tr><td><code>doGet()</code> / <code>doPost()</code></td><td>Μέθοδοι με <code>@GetMapping</code> / <code>@PostMapping</code></td></tr>
+    <tr><td><code>request.setAttribute(...)</code> και forward σε JSP</td><td><code>model.addAttribute(...)</code> και επιστροφή του ονόματος της σελίδας</td></tr>
+    <tr><td>JSP σελίδες</td><td>Thymeleaf templates (<code>src/main/resources/templates</code>)</td></tr>
+    <tr><td>Filter για έλεγχο πρόσβασης</td><td><code>RoleInterceptor</code> (<code>HandlerInterceptor</code>)</td></tr>
+    <tr><td><code>HttpSession</code></td><td><code>HttpSession</code> (το ίδιο servlet API)</td></tr>
+</table>
+<div class="note">
+    Χρησιμοποιήθηκε Thymeleaf αντί για JSP επειδή είναι η προτεινόμενη τεχνολογία προβολής του Spring Boot:
+    οι JSP σελίδες δεν υποστηρίζονται όταν η εφαρμογή εκτελείται ως εκτελέσιμο αρχείο jar (όπως στο Docker).
+    Η λειτουργία είναι ίδια: η σελίδα δημιουργείται δυναμικά στον server από τα δεδομένα του controller.
+</div>
+
+<h2>4. Βάση δεδομένων</h2>
+<table>
+    <tr><th style="width:18%">Πίνακας</th><th>Περιεχόμενο και σχέσεις</th></tr>
+    <tr><td><code>departments</code></td><td>Τμήματα. Κάθε χρήστης και κάθε μάθημα ανήκει σε ένα τμήμα (1:N).</td></tr>
+    <tr><td><code>users</code></td><td>Κοινά στοιχεία όλων των χρηστών: username, <code>password_hash</code>, <code>salt</code>, όνομα, επώνυμο, τμήμα, ρόλος.</td></tr>
+    <tr><td><code>students</code>, <code>professors</code>, <code>secretaries</code></td><td>Τα επιπλέον στοιχεία κάθε κατηγορίας (αριθμός μητρώου, κωδικός καθηγητή, αριθμός υπαλλήλου). Μοιράζονται το κλειδί του <code>users</code> (1:1), όπως η κληρονομικότητα των κλάσεων.</td></tr>
+    <tr><td><code>courses</code></td><td>Μαθήματα: κωδικός, τίτλος, ECTS, <code>semester</code> (1–8), τμήμα και υπεύθυνος καθηγητής (ξένο κλειδί, μπορεί να είναι κενό). Ένας καθηγητής διδάσκει 0..N μαθήματα.</td></tr>
+    <tr><td><code>enrollments</code></td><td>Εγγραφές φοιτητών σε μαθήματα — υλοποιεί τη σχέση πολλά-προς-πολλά.</td></tr>
+    <tr><td><code>grades</code></td><td>Βαθμοί (0–10). Ένας βαθμός ανά φοιτητή και μάθημα (<code>UNIQUE</code>).</td></tr>
+</table>
+<p>
+    Το πλήρες Μοντέλο Οντοτήτων-Σχέσεων βρίσκεται στο <code>db/er-model.drawio.xml</code> και η βάση (πίνακες και
+    δοκιμαστικά δεδομένα) στο <code>db/studentapp_db.sql</code>.
+</p>
+
+<h3>Αλλαγές σε σχέση με τη 2η άσκηση</h3>
+<ul>
+    <li>Η στήλη <code>password</code> αντικαταστάθηκε από τις <code>password_hash</code> και <code>salt</code> (βήμα 2.1).</li>
+    <li>Προστέθηκε η στήλη <code>semester</code> στα μαθήματα (για τη βαθμολογία ανά εξάμηνο και την προβολή μαθημάτων της γραμματείας).</li>
+    <li>Η αρχικοποίηση της βάσης δεν διαγράφει πλέον δεδομένα: οι πίνακες δημιουργούνται μόνο αν δεν υπάρχουν
+        (<code>CREATE TABLE IF NOT EXISTS</code>) και τα δοκιμαστικά δεδομένα προστίθενται μόνο αν λείπουν
+        (<code>ON CONFLICT DO NOTHING</code>). Έτσι οι βαθμοί και οι αναθέσεις που καταχωρούν οι χρήστες διατηρούνται.</li>
+    <li>Προστέθηκαν δοκιμαστικά δεδομένα: 3 τμήματα, 16 χρήστες (2 γραμματείς, 4 καθηγητές, 10 φοιτητές),
+        11 μαθήματα, 33 εγγραφές και 21 βαθμοί, ώστε κάθε λειτουργία να έχει δεδομένα για επίδειξη.</li>
+</ul>
+
+<h2>5. Υλοποίηση των ζητούμενων</h2>
+
+<h3>2.1 Σύνδεση χρηστών και κρυπτογράφηση κωδικών</h3>
+<p>
+    Όλες οι κατηγορίες χρηστών συνδέονται από την ίδια φόρμα (<code>POST /login</code>, <code>AuthController</code>).
+    Οι κωδικοί δεν αποθηκεύονται ποτέ όπως είναι: η κλάση <code>PasswordService</code> δημιουργεί για κάθε χρήστη ένα
+    <b>τυχαίο salt</b> 16 bytes και υπολογίζει το <b>hash</b> με τον αλγόριθμο PBKDF2-HmacSHA256
+    (65.536 επαναλήψεις, 256 bits). Κατά τη σύνδεση:
+</p>
+<ul>
+    <li>το <code>UserRepository</code> βρίσκει τον χρήστη μόνο με το username,</li>
+    <li>ο κωδικός που πληκτρολογήθηκε κρυπτογραφείται με το salt του χρήστη και συγκρίνεται με το αποθηκευμένο hash (σύγκριση σε σταθερό χρόνο),</li>
+    <li>αν ταιριάζει, ο χρήστης αποθηκεύεται στο session — χωρίς το hash και το salt.</li>
+</ul>
+
+<h3>2.2 Κεντρικό μενού (index.html)</h3>
+<p>
+    Η σελίδα <code>index.html</code> (<code>HomeController</code>) είναι η αρχική σελίδα για όλους τους χρήστες. Αν δεν έχει
+    συνδεθεί κανείς, εμφανίζει τη φόρμα σύνδεσης· μετά τη σύνδεση εμφανίζει το μενού λειτουργιών της κατηγορίας του
+    χρήστη. Ο <code>RoleInterceptor</code> ελέγχει πριν από κάθε σελίδα ότι ο χρήστης έχει συνδεθεί και ανήκει στη σωστή
+    κατηγορία (<code>/student/**</code>, <code>/professor/**</code>, <code>/secretary/**</code>).
+</p>
+
+<h3>2.3 Λειτουργίες ανά κατηγορία χρήστη</h3>
+<table>
+    <tr><th style="width:12%">Χρήστης</th><th style="width:30%">Λειτουργία</th><th style="width:26%">Controller (μέθοδος)</th><th>Σελίδα προβολής</th></tr>
+    <tr><td rowspan="3">Φοιτητής</td><td>Βαθμολογία ανά μάθημα</td><td><code>StudentController.grades</code></td><td><code>student/grades.html</code></td></tr>
+    <tr><td>Βαθμολογία ανά εξάμηνο</td><td><code>gradesBySemester</code></td><td><code>student/grades-by-semester.html</code></td></tr>
+    <tr><td>Συνολική βαθμολογία</td><td><code>summary</code></td><td><code>student/summary.html</code></td></tr>
+    <tr><td rowspan="2">Καθηγητής</td><td>Λίστα βαθμολογίας ανά μάθημα (βαθμολογημένα)</td><td><code>ProfessorController.grades</code></td><td><code>professor/grades.html</code></td></tr>
+    <tr><td>Καταχώρηση βαθμολογίας (μη βαθμολογημένα)</td><td><code>enterGradesForm</code> / <code>enterGrades</code></td><td><code>professor/enter-grades.html</code></td></tr>
+    <tr><td rowspan="2">Γραμματεία</td><td>Προβολή μαθημάτων (τίτλος, εξάμηνο, υπεύθυνος καθηγητής)</td><td><code>SecretaryController.courses</code>, <code>coursesWithProfessors</code></td><td><code>secretary/courses.html</code>, <code>secretary/courses-professors.html</code></td></tr>
+    <tr><td>Ανάθεση μαθήματος σε καθηγητή</td><td><code>assignForm</code> / <code>assign</code></td><td><code>secretary/assign.html</code></td></tr>
+</table>
+<ul>
+    <li><b>Συνολική βαθμολογία φοιτητή</b> (<code>GradeSummary</code>): μέσος όρος των μαθημάτων που πέρασε (βαθμός ≥ 5), μέσος όρος όλων των μαθημάτων που εξετάστηκε, ECTS, πλήθος επιτυχόντων και αποτυχόντων.</li>
+    <li><b>Καταχώρηση βαθμών</b> (<code>GradeService.saveGrades</code>): ελέγχεται ότι το μάθημα έχει ανατεθεί στον συγκεκριμένο καθηγητή, ότι κάθε φοιτητής είναι εγγεγραμμένος και δεν έχει ήδη βαθμό, και ότι ο βαθμός είναι από 0 έως 10. Αν κάποιος έλεγχος αποτύχει, δεν αποθηκεύεται κανένας βαθμός (transaction).</li>
+    <li>Ένας καθηγητής δεν μπορεί να δει ή να βαθμολογήσει μαθήματα άλλου καθηγητή, ακόμα κι αν αλλάξει το <code>courseId</code> στη διεύθυνση.</li>
+</ul>
+
+<h3>2.4 Διαχείριση συνόδου (session management)</h3>
+<ul>
+    <li>Μετά τη σύνδεση ο χρήστης αποθηκεύεται στο <code>HttpSession</code> και δημιουργείται <b>νέο session id</b> (<code>changeSessionId</code>), για προστασία από session fixation.</li>
+    <li>Το session αναγνωρίζεται μόνο από cookie και λήγει μετά από 30 λεπτά αδράνειας.</li>
+    <li>Κατά την <b>αποσύνδεση</b> το session διαγράφεται (<code>session.invalidate()</code>) και στέλνεται η επικεφαλίδα <code>Clear-Site-Data: "cache"</code>, ώστε ο browser να διαγράψει την cache της εφαρμογής.</li>
+    <li>Ο <code>NoCacheInterceptor</code> προσθέτει σε κάθε σελίδα τις επικεφαλίδες <code>Cache-Control: no-cache, no-store, must-revalidate</code>, <code>Pragma</code> και <code>Expires</code>. Έτσι, μετά το logout, το κουμπί «Πίσω» του browser δεν εμφανίζει σελίδες του προηγούμενου χρήστη.</li>
+</ul>
+
+<h3>3.1 &amp; 4.1 Επίπεδο δεδομένων και επίπεδο προβολής</h3>
+<p>
+    Όλα τα δεδομένα αποθηκεύονται στη βάση PostgreSQL (ενότητα 4). Για κάθε λειτουργία υπάρχει μία σελίδα Thymeleaf
+    που λαμβάνει τα αποτελέσματα από τον αντίστοιχο controller και δημιουργεί δυναμικά την προβολή. Το κοινό μενού
+    βρίσκεται στο <code>fragments/layout.html</code> και τα σφάλματα εμφανίζονται στη σελίδα <code>error.html</code>
+    (<code>GlobalExceptionHandler</code>).
+</p>
+
+<div class="keep">
+<h2>6. Εκτέλεση της εφαρμογής</h2>
+<div class="two">
+<div>
+    <p><b>Με Docker</b> (από τον φάκελο του project):</p>
+    <p><code>docker compose up --build</code><br>και άνοιγμα του <code>http://localhost:8080</code>.</p>
+    <p>
+        Στην πρώτη εκκίνηση οι πίνακες και τα δοκιμαστικά δεδομένα δημιουργούνται αυτόματα. Για επαναφορά της βάσης
+        στην αρχική κατάσταση: <code>docker compose down -v</code> ή φόρτωση του <code>db/studentapp_db.sql</code>.
+    </p>
+    <p>
+        <b>Από το IDE:</b> εκτέλεση της <code>StudentappApplication</code> με βάση PostgreSQL στη θύρα 5433
+        (ρυθμίσεις στο <code>application.properties</code>).
+    </p>
+</div>
+<div>
+    <p><b>Δοκιμαστικοί λογαριασμοί</b></p>
+    <table>
+        <tr><th>Κατηγορία</th><th>Username</th><th>Κωδικός</th></tr>
+        <tr><td>Γραμματεία</td><td><code>gramm1</code></td><td><code>gramm123</code></td></tr>
+        <tr><td>Καθηγητής</td><td><code>kkosta</code>, <code>mpapa</code>, <code>gdimou</code>, <code>avasil</code></td><td><code>prof123</code></td></tr>
+        <tr><td>Φοιτητής</td><td><code>sofia.n</code>, <code>giorgos.p</code> κ.ά.</td><td><code>stud123</code></td></tr>
+    </table>
+</div>
+</div>
+
+</div>
+
+<h2>7. Παραδοχές</h2>
+<ul>
+    <li><b>Βαθμολογημένο μάθημα:</b> η εκφώνηση δεν ορίζει πότε ένα μάθημα θεωρείται βαθμολογημένο. Θεωρήσαμε ότι ένα μάθημα εμφανίζεται στη «λίστα βαθμολογίας» όταν έχει τουλάχιστον έναν βαθμό, και στην «καταχώρηση βαθμολογίας» όσο υπάρχουν εγγεγραμμένοι φοιτητές χωρίς βαθμό. Έτσι ένα μάθημα μπορεί να βαθμολογηθεί σταδιακά.</li>
+    <li><b>Επιτυχία σε μάθημα:</b> βαθμός μεγαλύτερος ή ίσος του 5.</li>
+    <li><b>Εξάμηνα:</b> από 1 έως 8.</li>
+</ul>
+
+</body>
+</html>

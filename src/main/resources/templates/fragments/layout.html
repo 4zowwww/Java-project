@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head(pageTitle)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="'Βαθμολόγιο - ' + ${pageTitle}">Βαθμολόγιο</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+
+<!-- Το μενού εμφανίζει μόνο τις σελίδες της κατηγορίας του συνδεδεμένου χρήστη -->
+<nav th:fragment="topbar" class="container">
+    <ul>
+        <li th:if="${user.role == 'SECRETARY'}"><strong>Γραμματεία</strong></li>
+        <li th:if="${user.role == 'PROFESSOR'}"><strong>Καθηγητής</strong></li>
+        <li th:if="${user.role == 'STUDENT'}"><strong>Φοιτητής</strong></li>
+    </ul>
+    <ul>
+        <li><a th:href="@{/index.html}">Αρχική</a></li>
+
+        <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/courses}">Μαθήματα</a></li>
+        <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/courses-professors}">Μαθήματα &amp; Καθηγητές</a></li>
+        <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/assign}">Ανάθεση</a></li>
+
+        <li th:if="${user.role == 'PROFESSOR'}"><a th:href="@{/professor/grades}">Βαθμολογίες</a></li>
+        <li th:if="${user.role == 'PROFESSOR'}"><a th:href="@{/professor/enter-grades}">Καταχώρηση</a></li>
+
+        <li th:if="${user.role == 'STUDENT'}"><a th:href="@{/student/grades}">Ανά μάθημα</a></li>
+        <li th:if="${user.role == 'STUDENT'}"><a th:href="@{/student/grades-by-semester}">Ανά εξάμηνο</a></li>
+        <li th:if="${user.role == 'STUDENT'}"><a th:href="@{/student/summary}">Συνολικά</a></li>
+
+        <li><small th:text="${user.fullName}">Χρήστης</small></li>
+        <li><a th:href="@{/logout}" role="button" class="secondary outline">Αποσύνδεση</a></li>
+    </ul>
+</nav>
+
+</body>
+</html>

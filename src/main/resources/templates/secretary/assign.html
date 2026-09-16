@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Ανάθεση μαθήματος')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <h2>Ανάθεση μαθήματος σε Καθηγητή</h2>
+
+    <p th:if="${result != null and result.success}"><ins th:text="${result.message}"></ins></p>
+    <p th:if="${result != null and !result.success}"><mark th:text="${result.message}"></mark></p>
+
+    <article>
+        <form th:action="@{/secretary/assign}" method="post">
+            <label for="courseId">Μάθημα
+                <select id="courseId" name="courseId" required>
+                    <option value="" selected>-- Επιλέξτε μάθημα --</option>
+                    <option th:each="course : ${allCourses}"
+                            th:value="${course.id}"
+                            th:text="${course.courseCode} + ' - ' + ${course.courseName}
+                                     + (${course.hasProfessor()} ? ' (νυν: ' + ${course.professor.fullName} + ')' : ' (χωρίς καθηγητή)')">
+                    </option>
+                </select>
+            </label>
+
+            <label for="professorUserId">Καθηγητής
+                <select id="professorUserId" name="professorUserId" required>
+                    <option value="" selected>-- Επιλέξτε καθηγητή --</option>
+                    <option th:each="professor : ${professors}"
+                            th:value="${professor.id}"
+                            th:text="${professor.fullName} + ' (' + ${professor.professorId} + ')'">
+                    </option>
+                </select>
+            </label>
+
+            <button type="submit">Ανάθεση</button>
+        </form>
+    </article>
+
+    <div th:if="${result != null and result.success}">
+        <h3>Μαθήματα μετά την ανάθεση</h3>
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Κωδικός</th>
+                <th scope="col">Τίτλος μαθήματος</th>
+                <th scope="col">Υπεύθυνος Καθηγητής</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="course : ${allCourses}">
+                <td th:text="${course.courseCode}"></td>
+                <td th:text="${course.courseName}"></td>
+                <td th:if="${course.hasProfessor()}" th:text="${course.professor.fullName}"></td>
+                <td th:unless="${course.hasProfessor()}"><em>Δεν έχει ανατεθεί</em></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

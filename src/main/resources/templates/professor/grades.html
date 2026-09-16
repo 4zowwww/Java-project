@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Λίστα βαθμολογίας')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <h2>Λίστα βαθμολογίας ανά μάθημα</h2>
+
+    <p th:if="${error}"><mark th:text="${error}"></mark></p>
+
+    <!-- Επιλογή μαθήματος (μόνο μαθήματα που έχουν ήδη βαθμολογηθεί) -->
+    <article>
+        <p th:if="${#lists.isEmpty(courses)}">Δεν υπάρχουν ακόμα βαθμολογημένα μαθήματα.</p>
+
+        <form th:unless="${#lists.isEmpty(courses)}" th:action="@{/professor/grades}" method="get">
+            <label for="courseId">Μάθημα
+                <select id="courseId" name="courseId" required>
+                    <option value="">-- Επιλέξτε μάθημα --</option>
+                    <option th:each="course : ${courses}"
+                            th:value="${course.id}"
+                            th:text="${course.courseCode} + ' - ' + ${course.courseName} + ' (' + ${course.semester} + 'ο εξάμηνο)'"
+                            th:selected="${selectedCourse != null and selectedCourse.id == course.id}">
+                    </option>
+                </select>
+            </label>
+
+            <button type="submit">Προβολή</button>
+        </form>
+    </article>
+
+    <!-- Οι βαθμοί του μαθήματος που επιλέχθηκε -->
+    <div th:if="${selectedCourse != null}">
+        <h3 th:text="${selectedCourse.courseCode} + ' - ' + ${selectedCourse.courseName}"></h3>
+
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Αριθμός μητρώου</th>
+                <th scope="col">Ονοματεπώνυμο</th>
+                <th scope="col">Βαθμός</th>
+                <th scope="col">Αποτέλεσμα</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="grade : ${grades}">
+                <td th:text="${grade.student.registrationNumber}"></td>
+                <td th:text="${grade.student.fullName}"></td>
+                <td th:text="${#numbers.formatDecimal(grade.value, 1, 2)}"></td>
+                <td th:if="${grade.passing}"><ins>Επιτυχία</ins></td>
+                <td th:unless="${grade.passing}"><mark>Αποτυχία</mark></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(grades)}">
+                <td colspan="4">Δεν υπάρχουν βαθμοί για αυτό το μάθημα.</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

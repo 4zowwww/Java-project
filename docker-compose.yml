@@ -1,0 +1,34 @@
+services:
+
+  db:
+    image: postgres:16-alpine
+    container_name: studentapp-db
+    environment:
+      POSTGRES_DB: studentapp_db
+      POSTGRES_USER: dani
+      POSTGRES_PASSWORD: skilos2005
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U dani -d studentapp_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 12
+
+  app:
+    build: .
+    container_name: studentapp-web
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/studentapp_db
+      DB_USER: dani
+      DB_PASSWORD: skilos2005
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

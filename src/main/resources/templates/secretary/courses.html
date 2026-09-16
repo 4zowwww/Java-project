@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Μαθήματα')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <hgroup>
+        <h2>Σύνολο μαθημάτων</h2>
+        <p th:text="'Βρέθηκαν ' + ${#lists.size(courses)} + ' μαθήματα.'"></p>
+    </hgroup>
+
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Κωδικός</th>
+            <th scope="col">Τίτλος μαθήματος</th>
+            <th scope="col">Εξάμηνο</th>
+            <th scope="col">ECTS</th>
+            <th scope="col">Τμήμα</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course : ${courses}">
+            <td th:text="${course.courseCode}"></td>
+            <td th:text="${course.courseName}"></td>
+            <td th:text="${course.semester}"></td>
+            <td th:text="${course.ects}"></td>
+            <td th:text="${course.department}"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(courses)}">
+            <td colspan="5">Δεν υπάρχουν καταχωρημένα μαθήματα.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

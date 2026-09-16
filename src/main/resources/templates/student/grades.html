@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Βαθμολογία ανά μάθημα')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <hgroup>
+        <h2>Βαθμολογία ανά μάθημα</h2>
+        <p th:text="'Έχετε εξεταστεί σε ' + ${#lists.size(grades)} + ' μαθήματα.'"></p>
+    </hgroup>
+
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Εξάμηνο</th>
+            <th scope="col">Κωδικός</th>
+            <th scope="col">Τίτλος μαθήματος</th>
+            <th scope="col">ECTS</th>
+            <th scope="col">Βαθμός</th>
+            <th scope="col">Αποτέλεσμα</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="grade : ${grades}">
+            <td th:text="${grade.course.semester}"></td>
+            <td th:text="${grade.course.courseCode}"></td>
+            <td th:text="${grade.course.courseName}"></td>
+            <td th:text="${grade.course.ects}"></td>
+            <td th:text="${#numbers.formatDecimal(grade.value, 1, 2)}"></td>
+            <td th:if="${grade.passing}"><ins>Επιτυχία</ins></td>
+            <td th:unless="${grade.passing}"><mark>Αποτυχία</mark></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(grades)}">
+            <td colspan="6">Δεν έχετε βαθμολογηθεί σε κανένα μάθημα ακόμα.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

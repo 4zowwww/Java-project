@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Μαθήματα και Καθηγητές')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <h2>Μαθήματα και υπεύθυνος Καθηγητής</h2>
+
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Κωδικός</th>
+            <th scope="col">Τίτλος μαθήματος</th>
+            <th scope="col">Εξάμηνο</th>
+            <th scope="col">ECTS</th>
+            <th scope="col">Τμήμα</th>
+            <th scope="col">Υπεύθυνος Καθηγητής</th>
+            <th scope="col">Κωδικός Καθηγητή</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="course : ${courses}">
+            <td th:text="${course.courseCode}"></td>
+            <td th:text="${course.courseName}"></td>
+            <td th:text="${course.semester}"></td>
+            <td th:text="${course.ects}"></td>
+            <td th:text="${course.department}"></td>
+            <td th:if="${course.hasProfessor()}" th:text="${course.professor.fullName}"></td>
+            <td th:unless="${course.hasProfessor()}"><em>Δεν έχει ανατεθεί</em></td>
+            <td th:text="${course.hasProfessor()} ? ${course.professor.professorId} : '-'"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(courses)}">
+            <td colspan="7">Δεν υπάρχουν καταχωρημένα μαθήματα.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

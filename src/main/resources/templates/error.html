@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Σφάλμα')}"></head>
+<body>
+
+<main class="container">
+    <article>
+        <h2 th:text="${title} ?: 'Σφάλμα'">Σφάλμα</h2>
+        <p><mark th:text="${message} ?: 'Παρουσιάστηκε σφάλμα.'"></mark></p>
+        <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική σελίδα</a>
+    </article>
+</main>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Καταχώρηση βαθμολογίας')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <h2>Καταχώρηση βαθμολογίας</h2>
+
+    <p th:if="${success}"><ins th:text="${success}"></ins></p>
+    <p th:if="${error}"><mark th:text="${error}"></mark></p>
+
+    <!-- Επιλογή μαθήματος (μόνο μαθήματα με φοιτητές που δεν έχουν βαθμό) -->
+    <article>
+        <p th:if="${#lists.isEmpty(courses)}">Δεν υπάρχουν μαθήματα με φοιτητές που περιμένουν βαθμό.</p>
+
+        <form th:unless="${#lists.isEmpty(courses)}" th:action="@{/professor/enter-grades}" method="get">
+            <label for="courseId">Μάθημα
+                <select id="courseId" name="courseId" required>
+                    <option value="">-- Επιλέξτε μάθημα --</option>
+                    <option th:each="course : ${courses}"
+                            th:value="${course.id}"
+                            th:text="${course.courseCode} + ' - ' + ${course.courseName} + ' (' + ${course.semester} + 'ο εξάμηνο)'"
+                            th:selected="${selectedCourse != null and selectedCourse.id == course.id}">
+                    </option>
+                </select>
+            </label>
+
+            <button type="submit">Επιλογή</button>
+        </form>
+    </article>
+
+    <!-- Φόρμα με τους φοιτητές του μαθήματος που δεν έχουν βαθμό -->
+    <div th:if="${selectedCourse != null}">
+        <h3 th:text="${selectedCourse.courseCode} + ' - ' + ${selectedCourse.courseName}"></h3>
+
+        <p th:if="${#lists.isEmpty(students)}">Όλοι οι εγγεγραμμένοι φοιτητές έχουν ήδη βαθμολογηθεί.</p>
+
+        <form th:unless="${#lists.isEmpty(students)}" th:action="@{/professor/enter-grades}" method="post">
+            <input type="hidden" name="courseId" th:value="${selectedCourse.id}">
+
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Αριθμός μητρώου</th>
+                    <th scope="col">Ονοματεπώνυμο</th>
+                    <th scope="col">Βαθμός (0 - 10)</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="student : ${students}">
+                    <td th:text="${student.registrationNumber}"></td>
+                    <td th:text="${student.fullName}"></td>
+                    <td>
+                        <input type="hidden" name="studentIds" th:value="${student.id}">
+                        <input type="number" name="grades" min="0" max="10" step="0.1"
+                               th:aria-label="'Βαθμός για ' + ${student.fullName}">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <small>Αφήστε κενό το πεδίο όσων φοιτητών δεν θέλετε να βαθμολογήσετε τώρα.</small>
+
+            <button type="submit">Καταχώρηση βαθμών</button>
+        </form>
+    </div>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

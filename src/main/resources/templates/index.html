@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Αρχική')}"></head>
+<body>
+
+<!-- Αρχική σελίδα για όλους τους χρήστες -->
+
+<!-- 1) Δεν έχει συνδεθεί κανείς: φόρμα σύνδεσης -->
+<main class="container" th:if="${user == null}">
+    <article>
+        <hgroup>
+            <h1>Βαθμολόγιο</h1>
+            <p>Πληροφοριακό σύστημα φοιτητολογίου</p>
+        </hgroup>
+
+        <p th:if="${param.error}"><mark>Λάθος όνομα χρήστη ή κωδικός.</mark></p>
+        <p th:if="${param.denied}"><mark>Απαιτείται σύνδεση για να δείτε τη σελίδα.</mark></p>
+        <p th:if="${param.logout}"><ins>Αποσυνδεθήκατε με επιτυχία.</ins></p>
+
+        <form th:action="@{/login}" method="post">
+            <label for="username">Όνομα χρήστη
+                <input type="text" id="username" name="username" required autofocus>
+            </label>
+
+            <label for="password">Κωδικός
+                <input type="password" id="password" name="password" required>
+            </label>
+
+            <button type="submit">Σύνδεση</button>
+        </form>
+
+        <small>
+            Δοκιμαστικοί λογαριασμοί:
+            Γραμματεία <code>gramm1</code> / <code>gramm123</code> ·
+            Καθηγητής <code>kkosta</code> / <code>prof123</code> ·
+            Φοιτητής <code>sofia.n</code> / <code>stud123</code>
+        </small>
+    </article>
+</main>
+
+<!-- 2) Συνδεδεμένος χρήστης: κεντρικό μενού ανάλογα με την κατηγορία του -->
+<th:block th:if="${user != null}">
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <hgroup>
+        <h2 th:text="'Καλώς ήρθατε, ' + ${user.fullName}">Καλώς ήρθατε</h2>
+        <p th:if="${user.role == 'SECRETARY'}" th:text="'Γραμματεία | Αριθμός υπαλλήλου: ' + ${user.employeeNumber} + ' | Τμήμα: ' + ${user.department}"></p>
+        <p th:if="${user.role == 'PROFESSOR'}" th:text="'Καθηγητής | Κωδικός καθηγητή: ' + ${user.professorId} + ' | Τμήμα: ' + ${user.department}"></p>
+        <p th:if="${user.role == 'STUDENT'}" th:text="'Φοιτητής | Αριθμός μητρώου: ' + ${user.registrationNumber} + ' | Τμήμα: ' + ${user.department}"></p>
+    </hgroup>
+
+    <p th:if="${param.forbidden}"><mark>Δεν έχετε πρόσβαση σε αυτή τη σελίδα.</mark></p>
+
+    <!-- Μενού Γραμματείας -->
+    <div class="grid" th:if="${user.role == 'SECRETARY'}">
+        <article>
+            <h3>Προβολή συνόλου μαθημάτων</h3>
+            <p>Όλα τα μαθήματα του τμήματος με τις μονάδες ECTS.</p>
+            <a th:href="@{/secretary/courses}" role="button">Άνοιγμα</a>
+        </article>
+        <article>
+            <h3>Μαθήματα &amp; υπεύθυνος Καθηγητής</h3>
+            <p>Ποιος καθηγητής είναι υπεύθυνος για κάθε μάθημα.</p>
+            <a th:href="@{/secretary/courses-professors}" role="button">Άνοιγμα</a>
+        </article>
+        <article>
+            <h3>Ανάθεση μαθήματος</h3>
+            <p>Ορισμός ή αλλαγή του υπεύθυνου καθηγητή ενός μαθήματος.</p>
+            <a th:href="@{/secretary/assign}" role="button">Άνοιγμα</a>
+        </article>
+    </div>
+
+    <!-- Μενού Καθηγητή -->
+    <div class="grid" th:if="${user.role == 'PROFESSOR'}">
+        <article>
+            <h3>Λίστα βαθμολογίας ανά μάθημα</h3>
+            <p>Οι βαθμολογίες των μαθημάτων που έχουν ήδη βαθμολογηθεί.</p>
+            <a th:href="@{/professor/grades}" role="button">Άνοιγμα</a>
+        </article>
+        <article>
+            <h3>Καταχώρηση βαθμολογίας</h3>
+            <p>Βαθμολόγηση των φοιτητών που δεν έχουν βαθμό ακόμα.</p>
+            <a th:href="@{/professor/enter-grades}" role="button">Άνοιγμα</a>
+        </article>
+    </div>
+
+    <!-- Μενού Φοιτητή -->
+    <div class="grid" th:if="${user.role == 'STUDENT'}">
+        <article>
+            <h3>Βαθμολογία ανά μάθημα</h3>
+            <p>Ο βαθμός σε κάθε μάθημα που έχετε εξεταστεί.</p>
+            <a th:href="@{/student/grades}" role="button">Άνοιγμα</a>
+        </article>
+        <article>
+            <h3>Βαθμολογία ανά εξάμηνο</h3>
+            <p>Οι βαθμοί σας ομαδοποιημένοι ανά εξάμηνο.</p>
+            <a th:href="@{/student/grades-by-semester}" role="button">Άνοιγμα</a>
+        </article>
+        <article>
+            <h3>Συνολική βαθμολογία</h3>
+            <p>Μέσος όρος, ECTS και επιτυχόντα μαθήματα.</p>
+            <a th:href="@{/student/summary}" role="button">Άνοιγμα</a>
+        </article>
+    </div>
+</main>
+
+</th:block>
+
+</body>
+</html>

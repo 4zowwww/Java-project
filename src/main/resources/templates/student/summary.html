@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Συνολική βαθμολογία')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <hgroup>
+        <h2>Συνολική βαθμολογία</h2>
+        <p>Για όλα τα μαθήματα που έχετε εξεταστεί.</p>
+    </hgroup>
+
+    <p th:if="${summary.examinedCount == 0}">Δεν έχετε βαθμολογηθεί σε κανένα μάθημα ακόμα.</p>
+
+    <div class="grid">
+        <article>
+            <header>Μέσος όρος (επιτυχόντα μαθήματα)</header>
+            <h2 th:text="${summary.passedCount > 0} ? ${#numbers.formatDecimal(summary.averagePassed, 1, 2)} : '-'"></h2>
+        </article>
+        <article>
+            <header>Μέσος όρος (όλα τα μαθήματα)</header>
+            <h2 th:text="${summary.examinedCount > 0} ? ${#numbers.formatDecimal(summary.averageAll, 1, 2)} : '-'"></h2>
+        </article>
+        <article>
+            <header>Μονάδες ECTS</header>
+            <h2 th:text="${summary.ectsEarned}"></h2>
+        </article>
+    </div>
+
+    <div class="grid">
+        <article>
+            <header>Μαθήματα που εξεταστήκατε</header>
+            <h2 th:text="${summary.examinedCount}"></h2>
+        </article>
+        <article>
+            <header>Επιτυχόντα</header>
+            <h2 th:text="${summary.passedCount}"></h2>
+        </article>
+        <article>
+            <header>Αποτυχόντα</header>
+            <h2 th:text="${summary.failedCount}"></h2>
+        </article>
+    </div>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

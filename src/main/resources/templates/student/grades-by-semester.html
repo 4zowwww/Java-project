@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Βαθμολογία ανά εξάμηνο')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <h2>Βαθμολογία ανά εξάμηνο</h2>
+
+    <p th:if="${#lists.isEmpty(semesters)}">Δεν έχετε βαθμολογηθεί σε κανένα μάθημα ακόμα.</p>
+
+    <!-- Μία ενότητα για κάθε εξάμηνο -->
+    <section th:each="semester : ${semesters}" th:with="summary=${semester.summary}">
+        <hgroup>
+            <h3 th:text="${semester.semester} + 'ο εξάμηνο'">Εξάμηνο</h3>
+            <p>
+                Μέσος όρος (επιτυχόντα):
+                <strong th:text="${summary.passedCount > 0} ? ${#numbers.formatDecimal(summary.averagePassed, 1, 2)} : '-'"></strong>
+                | Επιτυχόντα: <strong th:text="${summary.passedCount} + ' / ' + ${summary.examinedCount}"></strong>
+                | ECTS: <strong th:text="${summary.ectsEarned}"></strong>
+            </p>
+        </hgroup>
+
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Κωδικός</th>
+                <th scope="col">Τίτλος μαθήματος</th>
+                <th scope="col">ECTS</th>
+                <th scope="col">Βαθμός</th>
+                <th scope="col">Αποτέλεσμα</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="grade : ${semester.grades}">
+                <td th:text="${grade.course.courseCode}"></td>
+                <td th:text="${grade.course.courseName}"></td>
+                <td th:text="${grade.course.ects}"></td>
+                <td th:text="${#numbers.formatDecimal(grade.value, 1, 2)}"></td>
+                <td th:if="${grade.passing}"><ins>Επιτυχία</ins></td>
+                <td th:unless="${grade.passing}"><mark>Αποτυχία</mark></td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>
