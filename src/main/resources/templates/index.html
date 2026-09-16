@@ -71,6 +71,23 @@
             <a th:href="@{/secretary/assign}" role="button">Άνοιγμα</a>
         </article>
     </div>
+    <div class="grid" th:if="${user.role == 'SECRETARY'}">
+        <article>
+            <h3>Δημιουργία χρηστών</h3>
+            <p>Νέοι φοιτητές και καθηγητές με κρυπτογραφημένο κωδικό.</p>
+            <a th:href="@{/secretary/create-user}" role="button">Άνοιγμα</a>
+        </article>
+        <article>
+            <h3>Δημιουργία μαθήματος</h3>
+            <p>Νέο μάθημα με εξάμηνο, ECTS και προαιρετικά υπεύθυνο καθηγητή.</p>
+            <a th:href="@{/secretary/create-course}" role="button">Άνοιγμα</a>
+        </article>
+        <article>
+            <h3>Λίστες φοιτητών</h3>
+            <p>Εγγραφή φοιτητών σε μαθήματα, δηλαδή οι λίστες προς βαθμολόγηση.</p>
+            <a th:href="@{/secretary/enrollments}" role="button">Άνοιγμα</a>
+        </article>
+    </div>
 
     <!-- Μενού Καθηγητή -->
     <div class="grid" th:if="${user.role == 'PROFESSOR'}">

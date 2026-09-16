@@ -88,6 +88,35 @@ public class CourseRepository
                 """, professorUserId, courseId);
     }
 
+    // Υπάρχει ήδη μάθημα με αυτόν τον κωδικό;
+    public boolean existsByCode(String courseCode)
+    {
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM courses WHERE course_code = ?", Integer.class, courseCode);
+        return count > 0;
+    }
+
+    // Νέο μάθημα (ο καθηγητής μπορεί να είναι null)
+    public void insert(String courseCode, String courseName, int ects, int semester, Long departmentId, Long professorUserId)
+    {
+        jdbcTemplate.update("""
+                INSERT INTO courses (course_code, course_name, ects, semester, department_id, professor_user_id)
+                VALUES (?, ?, ?, ?, ?, ?)
+                """, courseCode, courseName, ects, semester, departmentId, professorUserId);
+    }
+
+    // Είναι ο φοιτητής ήδη εγγεγραμμένος στο μάθημα;
+    public boolean isEnrolled(Long studentUserId, Long courseId)
+    {
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM enrollments WHERE student_user_id = ? AND course_id = ?", Integer.class, studentUserId, courseId);
+        return count > 0;
+    }
+
+    // Εγγραφή φοιτητή σε μάθημα (δηλαδή στη λίστα φοιτητών προς βαθμολόγηση)
+    public void enroll(Long studentUserId, Long courseId)
+    {
+        jdbcTemplate.update("INSERT INTO enrollments (student_user_id, course_id) VALUES (?, ?)", studentUserId, courseId);
+    }
+
     private RowMapper<Courses> courseRowMapper()
     {
         return (rs, rowNum) ->

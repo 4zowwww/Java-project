@@ -21,6 +21,9 @@
         <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/courses}">Μαθήματα</a></li>
         <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/courses-professors}">Μαθήματα &amp; Καθηγητές</a></li>
         <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/assign}">Ανάθεση</a></li>
+        <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/create-user}">Νέος χρήστης</a></li>
+        <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/create-course}">Νέο μάθημα</a></li>
+        <li th:if="${user.role == 'SECRETARY'}"><a th:href="@{/secretary/enrollments}">Λίστες</a></li>
 
         <li th:if="${user.role == 'PROFESSOR'}"><a th:href="@{/professor/grades}">Βαθμολογίες</a></li>
         <li th:if="${user.role == 'PROFESSOR'}"><a th:href="@{/professor/enter-grades}">Καταχώρηση</a></li>

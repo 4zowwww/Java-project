@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Λίστες φοιτητών')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <hgroup>
+        <h2>Λίστες φοιτητών προς βαθμολόγηση</h2>
+        <p>Οι φοιτητές που εγγράφονται σε ένα μάθημα εμφανίζονται στη λίστα βαθμολόγησης του καθηγητή.</p>
+    </hgroup>
+
+    <p th:if="${success}"><ins th:text="${success}"></ins></p>
+    <p th:if="${error}"><mark th:text="${error}"></mark></p>
+
+    <!-- Επιλογή μαθήματος -->
+    <article>
+        <form th:action="@{/secretary/enrollments}" method="get">
+            <label for="courseId">Μάθημα
+                <select id="courseId" name="courseId" required>
+                    <option value="">-- Επιλέξτε μάθημα --</option>
+                    <option th:each="course : ${allCourses}"
+                            th:value="${course.id}"
+                            th:text="${course.courseCode} + ' - ' + ${course.courseName} + ' (' + ${course.semester} + 'ο εξάμηνο)'"
+                            th:selected="${selectedCourse != null and selectedCourse.id == course.id}">
+                    </option>
+                </select>
+            </label>
+
+            <button type="submit">Προβολή λίστας</button>
+        </form>
+    </article>
+
+    <div th:if="${selectedCourse != null}">
+        <h3 th:text="${selectedCourse.courseCode} + ' - ' + ${selectedCourse.courseName}"></h3>
+        <p th:text="'Υπεύθυνος καθηγητής: ' + (${selectedCourse.hasProfessor()} ? ${selectedCourse.professor.fullName} : 'δεν έχει ανατεθεί')"></p>
+
+        <!-- Προσθήκη φοιτητή στη λίστα -->
+        <article>
+            <p th:if="${#lists.isEmpty(otherStudents)}">Όλοι οι φοιτητές είναι ήδη εγγεγραμμένοι σε αυτό το μάθημα.</p>
+
+            <form th:unless="${#lists.isEmpty(otherStudents)}" th:action="@{/secretary/enrollments}" method="post">
+                <input type="hidden" name="courseId" th:value="${selectedCourse.id}">
+                <label for="studentUserId">Προσθήκη φοιτητή
+                    <select id="studentUserId" name="studentUserId" required>
+                        <option value="">-- Επιλέξτε φοιτητή --</option>
+                        <option th:each="student : ${otherStudents}"
+                                th:value="${student.id}"
+                                th:text="${student.registrationNumber} + ' - ' + ${student.fullName} + ' (' + ${student.department} + ')'">
+                        </option>
+                    </select>
+                </label>
+                <button type="submit">Εγγραφή στο μάθημα</button>
+            </form>
+        </article>
+
+        <!-- Η λίστα του μαθήματος -->
+        <table>
+            <thead>
+            <tr>
+                <th scope="col">Αριθμός μητρώου</th>
+                <th scope="col">Ονοματεπώνυμο</th>
+                <th scope="col">Τμήμα</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="student : ${enrolledStudents}">
+                <td th:text="${student.registrationNumber}"></td>
+                <td th:text="${student.fullName}"></td>
+                <td th:text="${student.department}"></td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(enrolledStudents)}">
+                <td colspan="3">Δεν υπάρχουν εγγεγραμμένοι φοιτητές.</td>
+            </tr>
+            </tbody>
+        </table>
+        <p th:text="'Σύνολο: ' + ${#lists.size(enrolledStudents)} + ' φοιτητές'"></p>
+    </div>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

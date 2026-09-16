@@ -42,6 +42,47 @@ public class UserRepository
                 .findFirst();
     }
 
+    // Χρησιμοποιείται ήδη αυτό το username;
+    public boolean existsByUsername(String username)
+    {
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE username = ?", Integer.class, username);
+        return count > 0;
+    }
+
+    // Υπάρχει ήδη φοιτητής με αυτόν τον αριθμό μητρώου;
+    public boolean existsRegistrationNumber(int registrationNumber)
+    {
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM students WHERE registration_number = ?", Integer.class, registrationNumber);
+        return count > 0;
+    }
+
+    // Υπάρχει ήδη καθηγητής με αυτόν τον κωδικό;
+    public boolean existsProfessorId(String professorId)
+    {
+        Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM professors WHERE professor_id = ?", Integer.class, professorId);
+        return count > 0;
+    }
+
+    // Προσθέτει νέο χρήστη και επιστρέφει το id που του έδωσε η βάση
+    public Long insertUser(String username, String passwordHash, String salt, String name, String surname, Long departmentId, String role)
+    {
+        return jdbcTemplate.queryForObject("""
+                INSERT INTO users (username, password_hash, salt, name, surname, department_id, role)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                RETURNING id
+                """, Long.class, username, passwordHash, salt, name, surname, departmentId, role);
+    }
+
+    public void insertStudent(Long userId, int registrationNumber)
+    {
+        jdbcTemplate.update("INSERT INTO students (user_id, registration_number) VALUES (?, ?)", userId, registrationNumber);
+    }
+
+    public void insertProfessor(Long userId, String professorId)
+    {
+        jdbcTemplate.update("INSERT INTO professors (user_id, professor_id) VALUES (?, ?)", userId, professorId);
+    }
+
     private RowMapper<Users> userRowMapper()
     {
         return (rs, rowNum) ->

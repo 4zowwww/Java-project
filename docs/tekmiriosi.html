@@ -117,10 +117,10 @@
 <h3>3.2 Δομή του project</h3>
 <table>
     <tr><th style="width:22%">Πακέτο</th><th style="width:36%">Ρόλος</th><th>Κλάσεις</th></tr>
-    <tr><td><code>model</code></td><td>Οι βασικές κλάσεις της 1ης άσκησης και βοηθητικές κλάσεις αποτελεσμάτων</td><td><code>Users</code>, <code>Students</code>, <code>Professors</code>, <code>Secretaries</code>, <code>Courses</code>, <code>Grades</code>, <code>GradeSummary</code>, <code>SemesterGrades</code></td></tr>
+    <tr><td><code>model</code></td><td>Οι βασικές κλάσεις της 1ης άσκησης και βοηθητικές κλάσεις αποτελεσμάτων</td><td><code>Users</code>, <code>Students</code>, <code>Professors</code>, <code>Secretaries</code>, <code>Courses</code>, <code>Grades</code>, <code>Departments</code>, <code>GradeSummary</code>, <code>SemesterGrades</code></td></tr>
     <tr><td><code>controller</code></td><td>Δέχονται τα αιτήματα των σελίδων (ρόλος servlet)</td><td><code>HomeController</code>, <code>AuthController</code>, <code>StudentController</code>, <code>ProfessorController</code>, <code>SecretaryController</code></td></tr>
-    <tr><td><code>service</code></td><td>Λογική και έλεγχοι της εφαρμογής</td><td><code>AuthService</code>, <code>PasswordService</code>, <code>CourseService</code>, <code>GradeService</code>, <code>ProfessorService</code></td></tr>
-    <tr><td><code>repository</code></td><td>Εντολές SQL προς τη βάση (JDBC)</td><td><code>UserRepository</code>, <code>CourseRepository</code>, <code>GradeRepository</code>, <code>ProfessorRepository</code></td></tr>
+    <tr><td><code>service</code></td><td>Λογική και έλεγχοι της εφαρμογής</td><td><code>AuthService</code>, <code>PasswordService</code>, <code>UserService</code>, <code>CourseService</code>, <code>GradeService</code>, <code>ProfessorService</code>, <code>DepartmentService</code></td></tr>
+    <tr><td><code>repository</code></td><td>Εντολές SQL προς τη βάση (JDBC)</td><td><code>UserRepository</code>, <code>StudentRepository</code>, <code>ProfessorRepository</code>, <code>CourseRepository</code>, <code>GradeRepository</code>, <code>DepartmentRepository</code></td></tr>
     <tr><td><code>config</code></td><td>Ρυθμίσεις που εκτελούνται πριν από κάθε αίτημα</td><td><code>WebConfig</code>, <code>RoleInterceptor</code>, <code>NoCacheInterceptor</code></td></tr>
     <tr><td><code>exception</code></td><td>Κεντρικός χειρισμός σφαλμάτων</td><td><code>GlobalExceptionHandler</code></td></tr>
 </table>
@@ -198,13 +198,17 @@
     <tr><td>Συνολική βαθμολογία</td><td><code>summary</code></td><td><code>student/summary.html</code></td></tr>
     <tr><td rowspan="2">Καθηγητής</td><td>Λίστα βαθμολογίας ανά μάθημα (βαθμολογημένα)</td><td><code>ProfessorController.grades</code></td><td><code>professor/grades.html</code></td></tr>
     <tr><td>Καταχώρηση βαθμολογίας (μη βαθμολογημένα)</td><td><code>enterGradesForm</code> / <code>enterGrades</code></td><td><code>professor/enter-grades.html</code></td></tr>
-    <tr><td rowspan="2">Γραμματεία</td><td>Προβολή μαθημάτων (τίτλος, εξάμηνο, υπεύθυνος καθηγητής)</td><td><code>SecretaryController.courses</code>, <code>coursesWithProfessors</code></td><td><code>secretary/courses.html</code>, <code>secretary/courses-professors.html</code></td></tr>
+    <tr><td rowspan="5">Γραμματεία</td><td>Προβολή μαθημάτων (τίτλος, εξάμηνο, υπεύθυνος καθηγητής)</td><td><code>SecretaryController.courses</code>, <code>coursesWithProfessors</code></td><td><code>secretary/courses.html</code>, <code>secretary/courses-professors.html</code></td></tr>
     <tr><td>Ανάθεση μαθήματος σε καθηγητή</td><td><code>assignForm</code> / <code>assign</code></td><td><code>secretary/assign.html</code></td></tr>
+    <tr><td>Δημιουργία φοιτητών και καθηγητών (1η άσκηση, 10.1.1)</td><td><code>createUserForm</code>, <code>createStudent</code>, <code>createProfessor</code></td><td><code>secretary/create-user.html</code></td></tr>
+    <tr><td>Δημιουργία μαθημάτων (1η άσκηση, 10.1.1)</td><td><code>createCourseForm</code> / <code>createCourse</code></td><td><code>secretary/create-course.html</code></td></tr>
+    <tr><td>Λίστες φοιτητών προς βαθμολόγηση (1η άσκηση, 10.1.3)</td><td><code>enrollments</code> / <code>enroll</code></td><td><code>secretary/enrollments.html</code></td></tr>
 </table>
 <ul>
     <li><b>Συνολική βαθμολογία φοιτητή</b> (<code>GradeSummary</code>): μέσος όρος των μαθημάτων που πέρασε (βαθμός ≥ 5), μέσος όρος όλων των μαθημάτων που εξετάστηκε, ECTS, πλήθος επιτυχόντων και αποτυχόντων.</li>
     <li><b>Καταχώρηση βαθμών</b> (<code>GradeService.saveGrades</code>): ελέγχεται ότι το μάθημα έχει ανατεθεί στον συγκεκριμένο καθηγητή, ότι κάθε φοιτητής είναι εγγεγραμμένος και δεν έχει ήδη βαθμό, και ότι ο βαθμός είναι από 0 έως 10. Αν κάποιος έλεγχος αποτύχει, δεν αποθηκεύεται κανένας βαθμός (transaction).</li>
     <li>Ένας καθηγητής δεν μπορεί να δει ή να βαθμολογήσει μαθήματα άλλου καθηγητή, ακόμα κι αν αλλάξει το <code>courseId</code> στη διεύθυνση.</li>
+    <li><b>Επιπλέον λειτουργίες γραμματείας</b> (βήματα 10.1.1 και 10.1.3 της 1ης άσκησης): δημιουργία φοιτητών και καθηγητών (<code>UserService</code> — ο αρχικός κωδικός αποθηκεύεται ως hash + salt), δημιουργία μαθημάτων και εγγραφή φοιτητών σε μαθήματα. Οι εγγραφές αποτελούν τις λίστες φοιτητών που βαθμολογεί ο καθηγητής. Ελέγχεται ότι το όνομα χρήστη, ο αριθμός μητρώου, ο κωδικός καθηγητή και ο κωδικός μαθήματος δεν υπάρχουν ήδη.</li>
 </ul>
 
 <h3>2.4 Διαχείριση συνόδου (session management)</h3>

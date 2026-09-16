@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Δημιουργία χρηστών')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <hgroup>
+        <h2>Δημιουργία χρηστών</h2>
+        <p>Νέοι φοιτητές και καθηγητές. Ο κωδικός αποθηκεύεται κρυπτογραφημένος (hash + salt).</p>
+    </hgroup>
+
+    <p th:if="${success}"><ins th:text="${success}"></ins></p>
+    <p th:if="${error}"><mark th:text="${error}"></mark></p>
+
+    <div class="grid">
+        <!-- Νέος φοιτητής -->
+        <article>
+            <h3>Νέος φοιτητής</h3>
+            <form th:action="@{/secretary/create-student}" method="post">
+                <label>Όνομα
+                    <input type="text" name="name" maxlength="50" required>
+                </label>
+                <label>Επώνυμο
+                    <input type="text" name="surname" maxlength="50" required>
+                </label>
+                <label>Αριθμός μητρώου
+                    <input type="number" name="registrationNumber" min="1" required>
+                </label>
+                <label>Τμήμα
+                    <select name="departmentId" required>
+                        <option value="">-- Επιλέξτε τμήμα --</option>
+                        <option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.name}"></option>
+                    </select>
+                </label>
+                <label>Όνομα χρήστη
+                    <input type="text" name="username" maxlength="50" autocomplete="off" required>
+                </label>
+                <label>Αρχικός κωδικός (τουλάχιστον 6 χαρακτήρες)
+                    <input type="password" name="password" minlength="6" autocomplete="new-password" required>
+                </label>
+                <button type="submit">Δημιουργία φοιτητή</button>
+            </form>
+        </article>
+
+        <!-- Νέος καθηγητής -->
+        <article>
+            <h3>Νέος καθηγητής</h3>
+            <form th:action="@{/secretary/create-professor}" method="post">
+                <label>Όνομα
+                    <input type="text" name="name" maxlength="50" required>
+                </label>
+                <label>Επώνυμο
+                    <input type="text" name="surname" maxlength="50" required>
+                </label>
+                <label>Κωδικός καθηγητή (π.χ. PROF-05)
+                    <input type="text" name="professorId" maxlength="20" required>
+                </label>
+                <label>Τμήμα
+                    <select name="departmentId" required>
+                        <option value="">-- Επιλέξτε τμήμα --</option>
+                        <option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.name}"></option>
+                    </select>
+                </label>
+                <label>Όνομα χρήστη
+                    <input type="text" name="username" maxlength="50" autocomplete="off" required>
+                </label>
+                <label>Αρχικός κωδικός (τουλάχιστον 6 χαρακτήρες)
+                    <input type="password" name="password" minlength="6" autocomplete="new-password" required>
+                </label>
+                <button type="submit">Δημιουργία καθηγητή</button>
+            </form>
+        </article>
+    </div>
+
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>

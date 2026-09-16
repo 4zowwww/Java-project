@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="el" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/layout :: head('Δημιουργία μαθήματος')}"></head>
+<body>
+
+<nav th:replace="~{fragments/layout :: topbar}"></nav>
+
+<main class="container">
+    <h2>Δημιουργία μαθήματος</h2>
+
+    <p th:if="${success}"><ins th:text="${success}"></ins></p>
+    <p th:if="${error}"><mark th:text="${error}"></mark></p>
+
+    <article>
+        <form th:action="@{/secretary/create-course}" method="post">
+            <div class="grid">
+                <label>Κωδικός μαθήματος (π.χ. INF130)
+                    <input type="text" name="courseCode" maxlength="20" required>
+                </label>
+                <label>Τίτλος μαθήματος
+                    <input type="text" name="courseName" maxlength="150" required>
+                </label>
+            </div>
+
+            <div class="grid">
+                <label>Μονάδες ECTS
+                    <input type="number" name="ects" min="1" max="30" required>
+                </label>
+                <label>Εξάμηνο
+                    <select name="semester" required>
+                        <option value="">-- Επιλέξτε εξάμηνο --</option>
+                        <option th:each="number : ${#numbers.sequence(1, 8)}" th:value="${number}" th:text="${number} + 'ο εξάμηνο'"></option>
+                    </select>
+                </label>
+            </div>
+
+            <div class="grid">
+                <label>Τμήμα
+                    <select name="departmentId" required>
+                        <option value="">-- Επιλέξτε τμήμα --</option>
+                        <option th:each="department : ${departments}" th:value="${department.id}" th:text="${department.name}"></option>
+                    </select>
+                </label>
+                <label>Υπεύθυνος καθηγητής (προαιρετικά)
+                    <select name="professorUserId">
+                        <option value="">-- Χωρίς καθηγητή --</option>
+                        <option th:each="professor : ${professors}" th:value="${professor.id}" th:text="${professor.fullName} + ' (' + ${professor.professorId} + ')'"></option>
+                    </select>
+                </label>
+            </div>
+
+            <button type="submit">Δημιουργία μαθήματος</button>
+        </form>
+    </article>
+
+    <a th:href="@{/secretary/courses-professors}">Προβολή όλων των μαθημάτων</a> |
+    <a th:href="@{/index.html}">&larr; Επιστροφή στην αρχική</a>
+</main>
+
+</body>
+</html>
