@@ -11,7 +11,7 @@ import java.util.List;
 public class StudentRepository
 {
 
-    // Κοινό SELECT για τους φοιτητές
+    // Κοινο SELECT για τους φοιτητες
     private static final String SELECT_STUDENTS = """
             SELECT u.id, u.username, u.name, u.surname, d.name AS department, s.registration_number
             FROM students s
@@ -27,7 +27,7 @@ public class StudentRepository
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Οι φοιτητές που είναι εγγεγραμμένοι σε ένα μάθημα
+    // Οι φοιτητες που ειναι εγγεγραμμενοι σε ενα μαθημα
     public List<Students> findEnrolled(Long courseId)
     {
         return jdbcTemplate.query(SELECT_STUDENTS + """
@@ -36,7 +36,7 @@ public class StudentRepository
                 """, studentRowMapper(), courseId);
     }
 
-    // Οι φοιτητές που ΔΕΝ είναι εγγεγραμμένοι σε ένα μάθημα (για να επιλεγούν στην εγγραφή)
+    // Οι φοιτητες που ΔΕΝ ειναι εγγεγραμμενοι σε ενα μαθημα (για να επιλεγουν στην εγγραφη)
     public List<Students> findNotEnrolled(Long courseId)
     {
         return jdbcTemplate.query(SELECT_STUDENTS + """
@@ -45,7 +45,7 @@ public class StudentRepository
                 """, studentRowMapper(), courseId);
     }
 
-    // Υπάρχει φοιτητής με αυτό το id;
+    // Υπαρχει φοιτητης με αυτο το id;
     public boolean existsById(Long studentUserId)
     {
         Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM students WHERE user_id = ?", Integer.class, studentUserId);

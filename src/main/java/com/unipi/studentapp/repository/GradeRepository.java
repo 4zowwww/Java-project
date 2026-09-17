@@ -13,7 +13,7 @@ import java.util.List;
 public class GradeRepository
 {
 
-    // Κοινό SELECT για τους βαθμούς, μαζί με τα στοιχεία του μαθήματος και του φοιτητή
+    // Κοινο SELECT για τους βαθμους, μαζι με τα στοιχεια του μαθηματος και του φοιτητη
     private static final String SELECT_GRADES = """
             SELECT g.id, g.grade_value,
                    c.id AS course_id, c.course_code, c.course_name, c.ects, c.semester,
@@ -32,7 +32,7 @@ public class GradeRepository
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Οι βαθμοί ενός φοιτητή, ταξινομημένοι ανά εξάμηνο και μάθημα
+    // Οι βαθμοι ενος φοιτητη, ταξινομημενοι ανα εξαμηνο και μαθημα
     public List<Grades> findByStudent(Long studentUserId)
     {
         return jdbcTemplate.query(SELECT_GRADES + """
@@ -41,7 +41,7 @@ public class GradeRepository
                 """, gradeRowMapper(), studentUserId);
     }
 
-    // Οι βαθμοί όλων των φοιτητών σε ένα μάθημα
+    // Οι βαθμοι ολων των φοιτητων σε ενα μαθημα
     public List<Grades> findByCourse(Long courseId)
     {
         return jdbcTemplate.query(SELECT_GRADES + """
@@ -50,7 +50,7 @@ public class GradeRepository
                 """, gradeRowMapper(), courseId);
     }
 
-    // Οι φοιτητές που είναι εγγεγραμμένοι σε ένα μάθημα αλλά δεν έχουν βαθμό ακόμα
+    // Οι φοιτητες που ειναι εγγεγραμμενοι σε ενα μαθημα αλλα δεν εχουν βαθμο ακομα
     public List<Students> findUngradedStudents(Long courseId)
     {
         return jdbcTemplate.query("""

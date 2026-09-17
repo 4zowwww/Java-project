@@ -6,9 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-// Τρέχει πριν από κάθε προστατευμένη σελίδα και ελέγχει ότι ο χρήστης
-// έχει συνδεθεί και ανήκει στη σωστή κατηγορία (π.χ. ένας φοιτητής
-// δεν μπορεί να ανοίξει σελίδες της γραμματείας).
+// Τρεχει πριν απο καθε προστατευμενη σελιδα και ελεγχει οτι ο χρηστης
+// εχει συνδεθει και ανηκει στη σωστη κατηγορια (π.χ. ενας φοιτητης
+// δεν μπορει να ανοιξει σελιδες της γραμματειας).
 public class RoleInterceptor implements HandlerInterceptor
 {
 
@@ -26,14 +26,14 @@ public class RoleInterceptor implements HandlerInterceptor
     {
         Users user = authService.currentUser(request.getSession(false));
 
-        // Δεν έχει συνδεθεί: επιστροφή στη σελίδα σύνδεσης
+        // Δεν εχει συνδεθει: επιστροφη στη σελιδα συνδεσης
         if (user == null)
         {
             response.sendRedirect(request.getContextPath() + "/index.html?denied=1");
             return false;
         }
 
-        // Άλλη κατηγορία χρήστη: επιστροφή στην αρχική σελίδα με μήνυμα
+        // Αλλη κατηγορια χρηστη: επιστροφη στην αρχικη σελιδα με μηνυμα
         if (!user.getRole().equals(role))
         {
             response.sendRedirect(request.getContextPath() + "/index.html?forbidden=1");

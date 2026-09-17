@@ -2,8 +2,8 @@ package com.unipi.studentapp.model;
 
 import java.util.List;
 
-// Συγκεντρωτικά στοιχεία για μια λίστα βαθμών
-// (π.χ. όλων των μαθημάτων ενός φοιτητή ή μόνο ενός εξαμήνου)
+// Συγκεντρωτικα στοιχεια για μια λιστα βαθμων
+// (π.χ. ολων των μαθηματων ενος φοιτητη η μονο ενος εξαμηνου)
 public class GradeSummary
 {
 
@@ -42,13 +42,13 @@ public class GradeSummary
         }
     }
 
-    // Σε πόσα μαθήματα εξετάστηκε ο φοιτητής
+    // Σε ποσα μαθηματα εξεταστηκε ο φοιτητης
     public int getExaminedCount()
     {
         return examinedCount;
     }
 
-    // Πόσα μαθήματα πέρασε (βαθμός >= 5)
+    // Ποσα μαθηματα περασε (βαθμος >= 5)
     public int getPassedCount()
     {
         return passedCount;
@@ -59,19 +59,19 @@ public class GradeSummary
         return examinedCount - passedCount;
     }
 
-    // Οι μονάδες ECTS των μαθημάτων που πέρασε
+    // Οι μοναδες ECTS των μαθηματων που περασε
     public int getEctsEarned()
     {
         return ectsEarned;
     }
 
-    // Μέσος όρος όλων των μαθημάτων που εξετάστηκε
+    // Μεσος ορος ολων των μαθηματων που εξεταστηκε
     public double getAverageAll()
     {
         return averageAll;
     }
 
-    // Μέσος όρος μόνο των μαθημάτων που πέρασε
+    // Μεσος ορος μονο των μαθηματων που περασε
     public double getAveragePassed()
     {
         return averagePassed;

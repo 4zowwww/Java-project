@@ -11,7 +11,7 @@
     <p th:if="${success}"><ins th:text="${success}"></ins></p>
     <p th:if="${error}"><mark th:text="${error}"></mark></p>
 
-    <!-- Επιλογή μαθήματος (μόνο μαθήματα με φοιτητές που δεν έχουν βαθμό) -->
+    <!-- Επιλογη μαθηματος (μονο μαθηματα με φοιτητες που δεν εχουν βαθμο) -->
     <article>
         <p th:if="${#lists.isEmpty(courses)}">Δεν υπάρχουν μαθήματα με φοιτητές που περιμένουν βαθμό.</p>
 
@@ -31,7 +31,7 @@
         </form>
     </article>
 
-    <!-- Φόρμα με τους φοιτητές του μαθήματος που δεν έχουν βαθμό -->
+    <!-- Φορμα με τους φοιτητες του μαθηματος που δεν εχουν βαθμο -->
     <div th:if="${selectedCourse != null}">
         <h3 th:text="${selectedCourse.courseCode} + ' - ' + ${selectedCourse.courseName}"></h3>
 

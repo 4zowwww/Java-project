@@ -6,7 +6,7 @@ import java.util.List;
 public class Courses
 {
 
-    // Το τελευταίο εξάμηνο σπουδών
+    // Το τελευταιο εξαμηνο σπουδων
     public static final int MAX_SEMESTER = 8;
 
     private Long id;

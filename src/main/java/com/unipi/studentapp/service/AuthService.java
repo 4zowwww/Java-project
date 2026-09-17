@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class AuthService
 {
 
-    // Το όνομα με το οποίο αποθηκεύεται ο συνδεδεμένος χρήστης στο session
+    // Το ονομα με το οποιο αποθηκευεται ο συνδεδεμενος χρηστης στο session
     public static final String SESSION_USER = "user";
     private final UserRepository userRepository;
     private final PasswordService passwordService;
@@ -21,24 +21,24 @@ public class AuthService
         this.passwordService = passwordService;
     }
 
-    // Επιστρέφει τον χρήστη αν τα στοιχεία είναι σωστά, αλλιώς null
+    // Επιστρεφει τον χρηστη αν τα στοιχεια ειναι σωστα, αλλιως null
     public Users login(HttpSession session, String username, String password)
     {
         Users user = userRepository.findByUsername(username.trim()).orElse(null);
 
-        // Δεν υπάρχει χρήστης με αυτό το username
+        // Δεν υπαρχει χρηστης με αυτο το username
         if (user == null)
         {
             return null;
         }
 
-        // Λάθος κωδικός: το hash του κωδικού που δόθηκε δεν ταιριάζει με το αποθηκευμένο
+        // Λαθος κωδικος: το hash του κωδικου που δοθηκε δεν ταιριαζει με το αποθηκευμενο
         if (!passwordService.matches(password, user.getSalt(), user.getPasswordHash()))
         {
             return null;
         }
 
-        // Το hash και το salt δεν χρειάζονται μετά τη σύνδεση, οπότε δεν τα κρατάμε στο session
+        // Το hash και το salt δεν χρειαζονται μετα τη συνδεση, οποτε δεν τα κραταμε στο session
         user.setPasswordHash(null);
         user.setSalt(null);
 
@@ -51,7 +51,7 @@ public class AuthService
         session.invalidate();
     }
 
-    // Ο χρήστης που είναι συνδεδεμένος αυτή τη στιγμή (null αν δεν έχει συνδεθεί κανείς)
+    // Ο χρηστης που ειναι συνδεδεμενος αυτη τη στιγμη (null αν δεν εχει συνδεθει κανεις)
     public Users currentUser(HttpSession session)
     {
         if (session == null)

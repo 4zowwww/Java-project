@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-// Αρχική σελίδα (index.html) για όλους τους χρήστες.
-// Αν δεν έχει συνδεθεί κανείς εμφανίζεται η φόρμα σύνδεσης,
-// αλλιώς το μενού λειτουργιών της κατηγορίας του χρήστη.
+// Αρχικη σελιδα (index.html) για ολους τους χρηστες.
+// Αν δεν εχει συνδεθει κανεις εμφανιζεται η φορμα συνδεσης,
+// αλλιως το μενου λειτουργιων της κατηγοριας του χρηστη.
 @Controller
 public class HomeController
 {
@@ -20,7 +20,7 @@ public class HomeController
         this.authService = authService;
     }
 
-    // Η σελίδα ανοίγει και από το "/" και από το "/index.html"
+    // Η σελιδα ανοιγει και απο το "/" και απο το "/index.html"
     @GetMapping({"/", "/index.html"})
     public String index(HttpSession session, Model model)
     {

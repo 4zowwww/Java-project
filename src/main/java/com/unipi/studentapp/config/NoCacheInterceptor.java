@@ -4,9 +4,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-// Τρέχει πριν από κάθε σελίδα και λέει στον browser να ΜΗΝ κρατάει αντίγραφο (cache).
-// Έτσι μετά το logout, το κουμπί "Πίσω" δεν μπορεί να δείξει σελίδες του προηγούμενου χρήστη:
-// ο browser ξαναζητάει τη σελίδα από τον server, ο οποίος τον στέλνει στη σύνδεση.
+// Τρεχει πριν απο καθε σελιδα και λεει στον browser να ΜΗΝ κραταει αντιγραφο (cache).
+// Ετσι μετα το logout, το κουμπι "Πισω" δεν μπορει να δειξει σελιδες του προηγουμενου χρηστη:
+// ο browser ξαναζηταει τη σελιδα απο τον server, ο οποιος τον στελνει στη συνδεση.
 public class NoCacheInterceptor implements HandlerInterceptor
 {
 
@@ -15,7 +15,7 @@ public class NoCacheInterceptor implements HandlerInterceptor
     {
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1
         response.setHeader("Pragma", "no-cache");                                   // HTTP 1.0
-        response.setDateHeader("Expires", 0);                                       // παλιοί proxies
+        response.setDateHeader("Expires", 0);                                       // παλιοι proxies
         return true;
     }
 }

@@ -10,7 +10,7 @@
 
     <p th:if="${#lists.isEmpty(semesters)}">Δεν έχετε βαθμολογηθεί σε κανένα μάθημα ακόμα.</p>
 
-    <!-- Μία ενότητα για κάθε εξάμηνο -->
+    <!-- Μια ενοτητα για καθε εξαμηνο -->
     <section th:each="semester : ${semesters}" th:with="summary=${semester.summary}">
         <hgroup>
             <h3 th:text="${semester.semester} + 'ο εξάμηνο'">Εξάμηνο</h3>

@@ -1,6 +1,6 @@
 package com.unipi.studentapp.model;
 
-// Τμήμα του πανεπιστημίου (π.χ. Πληροφορική)
+// Τμημα του πανεπιστημιου (π.χ. Πληροφορικη)
 public class Departments
 {
 

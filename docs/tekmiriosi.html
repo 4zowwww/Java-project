@@ -262,5 +262,68 @@
     <li><b>Εξάμηνα:</b> από 1 έως 8.</li>
 </ul>
 
+<h2 class="page-break">Παράρτημα: Συχνές ερωτήσεις για την εφαρμογή</h2>
+
+<h3>1. Κρυπτογράφηση κωδικών (hash + salt)</h3>
+<p>
+    Χρησιμοποιείται ο αλγόριθμος <b>PBKDF2 με HmacSHA256</b>, ενσωματωμένος στη Java
+    (<code>javax.crypto.SecretKeyFactory</code>), χωρίς εξωτερική βιβλιοθήκη. Για κάθε χρήστη παράγεται
+    τυχαίο <b>salt</b> 16 bytes με <code>SecureRandom</code> και το hash υπολογίζεται με 65.536 επαναλήψεις
+    (μήκος 256 bits). Στη βάση αποθηκεύονται μόνο το hash και το salt, ποτέ ο πραγματικός κωδικός.
+    Υλοποίηση: <code>PasswordService</code> (<code>generateSalt</code>, <code>hash</code>, <code>matches</code>).
+</p>
+<ul>
+    <li><b>Γιατί salt;</b> Ώστε δύο χρήστες με τον ίδιο κωδικό να έχουν διαφορετικό hash και να μην λειτουργούν έτοιμοι πίνακες hash (rainbow tables).</li>
+    <li><b>Γιατί πολλές επαναλήψεις;</b> Κάνουν αργό τον υπολογισμό, άρα ασύμφορη την προσπάθεια εύρεσης του κωδικού με δοκιμές.</li>
+    <li><b>Πώς γίνεται ο έλεγχος στο login;</b> Ο χρήστης αναζητείται <b>μόνο με το username</b>, ο κωδικός που πληκτρολογήθηκε κρυπτογραφείται με το salt του χρήστη και τα δύο hash συγκρίνονται με <code>MessageDigest.isEqual</code> (σύγκριση σταθερού χρόνου).</li>
+</ul>
+
+<h3>2. Prepared statements και SQL injection</h3>
+<p>
+    Όλα τα ερωτήματα γράφονται με <code>?</code> και οι τιμές στέλνονται ξεχωριστά μέσω <code>JdbcTemplate</code>,
+    π.χ. <code>WHERE u.username = ?</code> στο <code>UserRepository</code>. Η βάση παραλαμβάνει πρώτα το ερώτημα
+    και μετά τις τιμές, οπότε μια τιμή δεν μπορεί ποτέ να γίνει εντολή SQL.
+</p>
+<ul>
+    <li><b>Πού θα υπήρχε κίνδυνος;</b> Αν το ερώτημα φτιαχνόταν με ένωση κειμένου, π.χ.
+        <code>"... WHERE username = '" + username + "'"</code>.</li>
+    <li><b>Παράδειγμα επίθεσης:</b> με είσοδο <code>' OR '1'='1</code> η συνθήκη θα γινόταν πάντα αληθής και θα ήταν δυνατή η σύνδεση χωρίς κωδικό. Με prepared statement, η βάση ψάχνει χρήστη με αυτό ακριβώς το όνομα και δεν βρίσκει κανέναν.</li>
+    <li><b>Προστασία από XSS:</b> οι σελίδες τυπώνουν τιμές με <code>th:text</code>, που μετατρέπει τους χαρακτήρες HTML σε ακίνδυνο κείμενο.</li>
+</ul>
+
+<h3>3. Σύνδεση με τη βάση δεδομένων</h3>
+<p>
+    Η επικοινωνία γίνεται με <b>JDBC</b>, με τον PostgreSQL driver που δηλώνεται στο <code>pom.xml</code>.
+    Τα στοιχεία σύνδεσης βρίσκονται στο <code>application.properties</code> και το Spring Boot δημιουργεί από
+    αυτά το <code>JdbcTemplate</code>, το οποίο δίνεται σε κάθε repository μέσω του constructor.
+</p>
+<ul>
+    <li><b>Τι κάνει το <code>JdbcTemplate</code>;</b> Ανοίγει τη σύνδεση, δημιουργεί το <code>PreparedStatement</code>, εκτελεί το ερώτημα, μετατρέπει τις γραμμές σε αντικείμενα με έναν <code>RowMapper</code> και κλείνει τα πάντα, ακόμα και σε περίπτωση σφάλματος.</li>
+    <li><b>Connection pool:</b> χρησιμοποιείται το HikariCP (προεπιλογή του Spring Boot), ώστε οι συνδέσεις να επαναχρησιμοποιούνται αντί να ανοίγουν από την αρχή σε κάθε ερώτημα.</li>
+    <li><b>Πού τρέχει η βάση;</b> Σε container PostgreSQL 16 (θύρα 5432 εσωτερικά, 5433 στον υπολογιστή). Οι πίνακες και τα δοκιμαστικά δεδομένα δημιουργούνται στην εκκίνηση από τα <code>schema.sql</code> και <code>data.sql</code>.</li>
+</ul>
+
+<h3>4. Διαχείριση συνόδου (session)</h3>
+<p>
+    Το HTTP δεν έχει μνήμη, οπότε ο server χρησιμοποιεί session: κατά το login ο χρήστης αποθηκεύεται στο
+    <code>HttpSession</code> και ο browser κρατάει μόνο το αναγνωριστικό (cookie <code>JSESSIONID</code>).
+    Τα δεδομένα παραμένουν στον server, άρα ο ρόλος δεν μπορεί να αλλοιωθεί από τον χρήστη.
+</p>
+<ul>
+    <li><b>Έλεγχος πρόσβασης:</b> ο <code>RoleInterceptor</code> τρέχει πριν από κάθε προστατευμένη σελίδα και ελέγχει το session. Αν ο χρήστης δεν έχει συνδεθεί ή ανήκει σε άλλη κατηγορία, η σελίδα δεν εκτελείται ποτέ.</li>
+    <li><b>Ασφάλεια συνόδου:</b> μετά το login δημιουργείται νέο session id (<code>changeSessionId</code>) για προστασία από session fixation, το session αναγνωρίζεται μόνο από cookie και λήγει μετά από 30 λεπτά αδράνειας.</li>
+    <li><b>Αποσύνδεση:</b> <code>session.invalidate()</code> και επικεφαλίδα <code>Clear-Site-Data: "cache"</code>, ενώ ο <code>NoCacheInterceptor</code> εμποδίζει τον browser να αποθηκεύσει σελίδες, ώστε το κουμπί «Πίσω» να μην δείχνει δεδομένα του προηγούμενου χρήστη.</li>
+</ul>
+
+<h3>5. Παράδειγμα πλήρους διαδρομής: καταχώρηση βαθμού</h3>
+<ol>
+    <li>Ο καθηγητής υποβάλλει τη φόρμα: <code>POST /professor/enter-grades</code>.</li>
+    <li><code>NoCacheInterceptor</code> και <code>RoleInterceptor</code> ελέγχουν τη σύνοδο και τον ρόλο.</li>
+    <li><code>ProfessorController.enterGrades</code> διαβάζει τα πεδία της φόρμας.</li>
+    <li><code>GradeService.saveGrades</code> ελέγχει ότι το μάθημα ανήκει στον καθηγητή, ότι κάθε φοιτητής είναι εγγεγραμμένος και αβαθμολόγητος και ότι ο βαθμός είναι 0–10. Η μέθοδος είναι <code>@Transactional</code>: ή αποθηκεύονται όλοι οι βαθμοί ή κανένας.</li>
+    <li><code>GradeRepository.insert</code> εκτελεί το <code>INSERT</code> με prepared statement.</li>
+    <li>Ο controller επιστρέφει ξανά τη σελίδα με μήνυμα επιτυχίας ή σφάλματος, την οποία παράγει το Thymeleaf.</li>
+</ol>
+
 </body>
 </html>

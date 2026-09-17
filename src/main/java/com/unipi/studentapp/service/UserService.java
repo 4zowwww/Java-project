@@ -6,8 +6,8 @@ import com.unipi.studentapp.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-// Δημιουργία νέων χρηστών από τη γραμματεία (1η άσκηση, βήμα 10.1.1).
-// Αν κάτι δεν είναι σωστό, οι μέθοδοι πετάνε IllegalArgumentException με μήνυμα για τον χρήστη.
+// Δημιουργια νεων χρηστων απο τη γραμματεια (1η ασκηση, βημα 10.1.1).
+// Αν κατι δεν ειναι σωστο, οι μεθοδοι πετανε IllegalArgumentException με μηνυμα για τον χρηστη.
 @Service
 public class UserService
 {
@@ -83,7 +83,7 @@ public class UserService
         return "Ο καθηγητής " + name.trim() + " " + surname.trim() + " (" + professorId.trim() + ") δημιουργήθηκε.";
     }
 
-    // Κοινοί έλεγχοι για κάθε νέο χρήστη
+    // Κοινοι ελεγχοι για καθε νεο χρηστη
     private void checkUserFields(String username, String password, String name, String surname, Long departmentId)
     {
         if (isBlank(username) || isBlank(password) || isBlank(name) || isBlank(surname) || departmentId == null)
@@ -112,7 +112,7 @@ public class UserService
         }
     }
 
-    // Αποθηκεύει τον χρήστη με κρυπτογραφημένο κωδικό (hash + salt) και επιστρέφει το id του
+    // Αποθηκευει τον χρηστη με κρυπτογραφημενο κωδικο (hash + salt) και επιστρεφει το id του
     private Long insertUser(String username, String password, String name, String surname, Long departmentId, String role)
     {
         String salt = passwordService.generateSalt();

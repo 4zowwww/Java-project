@@ -14,7 +14,7 @@
     <p th:if="${success}"><ins th:text="${success}"></ins></p>
     <p th:if="${error}"><mark th:text="${error}"></mark></p>
 
-    <!-- Επιλογή μαθήματος -->
+    <!-- Επιλογη μαθηματος -->
     <article>
         <form th:action="@{/secretary/enrollments}" method="get">
             <label for="courseId">Μάθημα
@@ -36,7 +36,7 @@
         <h3 th:text="${selectedCourse.courseCode} + ' - ' + ${selectedCourse.courseName}"></h3>
         <p th:text="'Υπεύθυνος καθηγητής: ' + (${selectedCourse.hasProfessor()} ? ${selectedCourse.professor.fullName} : 'δεν έχει ανατεθεί')"></p>
 
-        <!-- Προσθήκη φοιτητή στη λίστα -->
+        <!-- Προσθηκη φοιτητη στη λιστα -->
         <article>
             <p th:if="${#lists.isEmpty(otherStudents)}">Όλοι οι φοιτητές είναι ήδη εγγεγραμμένοι σε αυτό το μάθημα.</p>
 
@@ -55,7 +55,7 @@
             </form>
         </article>
 
-        <!-- Η λίστα του μαθήματος -->
+        <!-- Η λιστα του μαθηματος -->
         <table>
             <thead>
             <tr>

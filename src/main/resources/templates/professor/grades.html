@@ -10,7 +10,7 @@
 
     <p th:if="${error}"><mark th:text="${error}"></mark></p>
 
-    <!-- Επιλογή μαθήματος (μόνο μαθήματα που έχουν ήδη βαθμολογηθεί) -->
+    <!-- Επιλογη μαθηματος (μονο μαθηματα που εχουν ηδη βαθμολογηθει) -->
     <article>
         <p th:if="${#lists.isEmpty(courses)}">Δεν υπάρχουν ακόμα βαθμολογημένα μαθήματα.</p>
 
@@ -30,7 +30,7 @@
         </form>
     </article>
 
-    <!-- Οι βαθμοί του μαθήματος που επιλέχθηκε -->
+    <!-- Οι βαθμοι του μαθηματος που επιλεχθηκε -->
     <div th:if="${selectedCourse != null}">
         <h3 th:text="${selectedCourse.courseCode} + ' - ' + ${selectedCourse.courseName}"></h3>
 

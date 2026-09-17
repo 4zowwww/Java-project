@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-// Λειτουργίες Γραμματείας
+// Λειτουργιες Γραμματειας
 @Controller
 @RequestMapping("/secretary")
 public class SecretaryController
@@ -36,7 +36,7 @@ public class SecretaryController
         this.departmentService = departmentService;
     }
 
-    // ---------- Προβολή μαθημάτων ----------
+    // ---------- Προβολη μαθηματων ----------
 
     @GetMapping("/courses")
     public String courses(HttpSession session, Model model)
@@ -54,7 +54,7 @@ public class SecretaryController
         return "secretary/courses-professors";
     }
 
-    // ---------- Ανάθεση μαθήματος σε καθηγητή ----------
+    // ---------- Αναθεση μαθηματος σε καθηγητη ----------
 
     @GetMapping("/assign")
     public String assignForm(HttpSession session, Model model)
@@ -76,7 +76,7 @@ public class SecretaryController
         return "secretary/assign";
     }
 
-    // ---------- Δημιουργία φοιτητών και καθηγητών ----------
+    // ---------- Δημιουργια φοιτητων και καθηγητων ----------
 
     @GetMapping("/create-user")
     public String createUserForm(HttpSession session, Model model)
@@ -117,14 +117,14 @@ public class SecretaryController
         return "secretary/create-user";
     }
 
-    // Τα δεδομένα της σελίδας δημιουργίας χρηστών (κοινό για GET και POST)
+    // Τα δεδομενα της σελιδας δημιουργιας χρηστων (κοινο για GET και POST)
     private void fillCreateUserPage(HttpSession session, Model model)
     {
         model.addAttribute("user", authService.currentUser(session));
         model.addAttribute("departments", departmentService.findAll());
     }
 
-    // ---------- Δημιουργία μαθημάτων ----------
+    // ---------- Δημιουργια μαθηματων ----------
 
     @GetMapping("/create-course")
     public String createCourseForm(HttpSession session, Model model)
@@ -149,7 +149,7 @@ public class SecretaryController
         return "secretary/create-course";
     }
 
-    // Τα δεδομένα της σελίδας δημιουργίας μαθήματος (κοινό για GET και POST)
+    // Τα δεδομενα της σελιδας δημιουργιας μαθηματος (κοινο για GET και POST)
     private void fillCreateCoursePage(HttpSession session, Model model)
     {
         model.addAttribute("user", authService.currentUser(session));
@@ -157,7 +157,7 @@ public class SecretaryController
         model.addAttribute("professors", professorService.findAll());
     }
 
-    // ---------- Λίστες φοιτητών προς βαθμολόγηση (εγγραφές σε μαθήματα) ----------
+    // ---------- Λιστες φοιτητων προς βαθμολογηση (εγγραφες σε μαθηματα) ----------
 
     @GetMapping("/enrollments")
     public String enrollments(@RequestParam(required = false) Long courseId, HttpSession session, Model model)
@@ -182,7 +182,7 @@ public class SecretaryController
         return "secretary/enrollments";
     }
 
-    // Τα δεδομένα της σελίδας εγγραφών (κοινό για GET και POST)
+    // Τα δεδομενα της σελιδας εγγραφων (κοινο για GET και POST)
     private void fillEnrollmentsPage(Long courseId, HttpSession session, Model model)
     {
         model.addAttribute("user", authService.currentUser(session));

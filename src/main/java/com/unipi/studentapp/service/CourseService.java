@@ -36,7 +36,7 @@ public class CourseService
         return courseRepository.findAll();
     }
 
-    // Το μάθημα με αυτό το id, ή null αν δεν υπάρχει
+    // Το μαθημα με αυτο το id, η null αν δεν υπαρχει
     public Courses findById(Long courseId)
     {
         if (courseId == null)
@@ -46,20 +46,20 @@ public class CourseService
         return courseRepository.findById(courseId).orElse(null);
     }
 
-    // Τα μαθήματα του καθηγητή που έχουν ήδη βαθμολογίες
+    // Τα μαθηματα του καθηγητη που εχουν ηδη βαθμολογιες
     public List<Courses> findGradedCourses(Long professorUserId)
     {
         return courseRepository.findGradedByProfessor(professorUserId);
     }
 
-    // Τα μαθήματα του καθηγητή με φοιτητές που περιμένουν βαθμό
+    // Τα μαθηματα του καθηγητη με φοιτητες που περιμενουν βαθμο
     public List<Courses> findCoursesToGrade(Long professorUserId)
     {
         return courseRepository.findToGradeByProfessor(professorUserId);
     }
 
-    // Επιστρέφει το μάθημα μόνο αν έχει ανατεθεί στον συγκεκριμένο καθηγητή, αλλιώς null.
-    // Έτσι ένας καθηγητής δεν μπορεί να δει ή να βαθμολογήσει μαθήματα άλλου καθηγητή.
+    // Επιστρεφει το μαθημα μονο αν εχει ανατεθει στον συγκεκριμενο καθηγητη, αλλιως null.
+    // Ετσι ενας καθηγητης δεν μπορει να δει η να βαθμολογησει μαθηματα αλλου καθηγητη.
     public Courses findProfessorCourse(Long professorUserId, Long courseId)
     {
         if (courseId == null)
@@ -121,9 +121,9 @@ public class CourseService
                 + professor.getFullName() + ".");
     }
 
-    // ---------- Δημιουργία μαθημάτων (1η άσκηση, βήμα 10.1.1) ----------
+    // ---------- Δημιουργια μαθηματων (1η ασκηση, βημα 10.1.1) ----------
 
-    // Δημιουργεί νέο μάθημα. Αν κάτι δεν είναι σωστό πετάει IllegalArgumentException με μήνυμα για τον χρήστη.
+    // Δημιουργει νεο μαθημα. Αν κατι δεν ειναι σωστο πεταει IllegalArgumentException με μηνυμα για τον χρηστη.
     @Transactional
     public String createCourse(String courseCode, String courseName, String ectsText, String semesterText, Long departmentId, Long professorUserId)
     {
@@ -165,7 +165,7 @@ public class CourseService
             throw new IllegalArgumentException("Το τμήμα δεν βρέθηκε.");
         }
 
-        // Ο υπεύθυνος καθηγητής είναι προαιρετικός
+        // Ο υπευθυνος καθηγητης ειναι προαιρετικος
         if (professorUserId != null && professorRepository.findById(professorUserId).isEmpty())
         {
             throw new IllegalArgumentException("Ο καθηγητής δεν βρέθηκε.");
@@ -176,22 +176,22 @@ public class CourseService
         return "Το μάθημα " + title + " (" + code + ") δημιουργήθηκε.";
     }
 
-    // ---------- Λίστες φοιτητών προς βαθμολόγηση (1η άσκηση, βήμα 10.1.3) ----------
+    // ---------- Λιστες φοιτητων προς βαθμολογηση (1η ασκηση, βημα 10.1.3) ----------
 
-    // Οι φοιτητές που είναι εγγεγραμμένοι στο μάθημα
+    // Οι φοιτητες που ειναι εγγεγραμμενοι στο μαθημα
     public List<Students> findEnrolledStudents(Long courseId)
     {
         return studentRepository.findEnrolled(courseId);
     }
 
-    // Οι φοιτητές που μπορούν ακόμα να εγγραφούν στο μάθημα
+    // Οι φοιτητες που μπορουν ακομα να εγγραφουν στο μαθημα
     public List<Students> findStudentsNotEnrolled(Long courseId)
     {
         return studentRepository.findNotEnrolled(courseId);
     }
 
-    // Εγγράφει έναν φοιτητή σε μάθημα, δηλαδή τον προσθέτει στη λίστα προς βαθμολόγηση.
-    // Αν κάτι δεν είναι σωστό πετάει IllegalArgumentException με μήνυμα για τον χρήστη.
+    // Εγγραφει εναν φοιτητη σε μαθημα, δηλαδη τον προσθετει στη λιστα προς βαθμολογηση.
+    // Αν κατι δεν ειναι σωστο πεταει IllegalArgumentException με μηνυμα για τον χρηστη.
     @Transactional
     public String enrollStudent(Long courseId, Long studentUserId)
     {
@@ -220,7 +220,7 @@ public class CourseService
         return "Ο φοιτητής προστέθηκε στη λίστα του μαθήματος " + course.getCourseCode() + ".";
     }
 
-    // Μετατρέπει κείμενο σε ακέραιο αριθμό, αλλιώς πετάει το μήνυμα που δόθηκε
+    // Μετατρεπει κειμενο σε ακεραιο αριθμο, αλλιως πεταει το μηνυμα που δοθηκε
     private int parseWholeNumber(String text, String errorMessage)
     {
         try

@@ -20,10 +20,10 @@ public class WebConfig implements WebMvcConfigurer
     @Override
     public void addInterceptors(InterceptorRegistry registry)
     {
-        // Καμία σελίδα δεν αποθηκεύεται στην cache του browser (μπαίνει πρώτο, ώστε να ισχύει και στα redirect)
+        // Καμια σελιδα δεν αποθηκευεται στην cache του browser (μπαινει πρωτο, ωστε να ισχυει και στα redirect)
         registry.addInterceptor(new NoCacheInterceptor()).addPathPatterns("/**");
 
-        // Οι σελίδες κάθε κατηγορίας χρήστη επιτρέπονται μόνο σε αυτή την κατηγορία
+        // Οι σελιδες καθε κατηγοριας χρηστη επιτρεπονται μονο σε αυτη την κατηγορια
         registry.addInterceptor(new RoleInterceptor(authService, Users.ROLE_SECRETARY)).addPathPatterns("/secretary/**");
         registry.addInterceptor(new RoleInterceptor(authService, Users.ROLE_PROFESSOR)).addPathPatterns("/professor/**");
         registry.addInterceptor(new RoleInterceptor(authService, Users.ROLE_STUDENT)).addPathPatterns("/student/**");

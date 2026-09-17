@@ -28,7 +28,7 @@ public class DepartmentRepository
                 """, departmentRowMapper());
     }
 
-    // Υπάρχει τμήμα με αυτό το id;
+    // Υπαρχει τμημα με αυτο το id;
     public boolean existsById(Long departmentId)
     {
         Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM departments WHERE id = ?", Integer.class, departmentId);

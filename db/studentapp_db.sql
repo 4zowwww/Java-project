@@ -1,10 +1,10 @@
 -- =====================================================================
--- Βάση δεδομένων της εφαρμογής βαθμολογίου (PostgreSQL) - studentapp_db
--- Περιέχει: διαγραφή παλιών πινάκων, δημιουργία πινάκων, δοκιμαστικά δεδομένα.
+-- Βαση δεδομενων της εφαρμογης βαθμολογιου (PostgreSQL) - studentapp_db
+-- Περιεχει: διαγραφη παλιων πινακων, δημιουργια πινακων, δοκιμαστικα δεδομενα.
 --
--- Φόρτωση (ΠΡΟΣΟΧΗ: διαγράφει ό,τι υπάρχει ήδη στους πίνακες της βάσης):
---   psql -U <χρήστης> -d studentapp_db -f db/studentapp_db.sql
--- ή με Docker:
+-- Φορτωση (ΠΡΟΣΟΧΗ: διαγραφει ο,τι υπαρχει ηδη στους πινακες της βασης):
+--   psql -U <χρηστης> -d studentapp_db -f db/studentapp_db.sql
+-- η με Docker:
 --   docker exec -i studentapp-db psql -U dani -d studentapp_db < db/studentapp_db.sql
 -- =====================================================================
 
@@ -18,7 +18,7 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS departments CASCADE;
 
 -- ---------------------------------------------------------------------
--- Πίνακες
+-- Πινακες
 -- ---------------------------------------------------------------------
 
 CREATE TABLE IF NOT EXISTS departments (
@@ -87,7 +87,7 @@ CREATE INDEX IF NOT EXISTS idx_grades_student     ON grades  (student_user_id);
 CREATE INDEX IF NOT EXISTS idx_grades_course      ON grades  (course_id);
 
 -- ---------------------------------------------------------------------
--- Δοκιμαστικά δεδομένα
+-- Δοκιμαστικα δεδομενα
 -- ---------------------------------------------------------------------
 
 INSERT INTO departments (id, code, name) VALUES
@@ -95,8 +95,8 @@ INSERT INTO departments (id, code, name) VALUES
     (2, 'DS',  'Digital Systems'),
     (3, 'MATH','Mathematics');
 
--- Οι κωδικοί αποθηκεύονται κρυπτογραφημένοι (PBKDF2-HmacSHA256 hash + τυχαίο salt ανά χρήστη).
--- Δοκιμαστικοί κωδικοί: gramm1 / gramm123, gramm2 / gramm456, καθηγητές: prof123, φοιτητές: stud123
+-- Οι κωδικοι αποθηκευονται κρυπτογραφημενοι (PBKDF2-HmacSHA256 hash + τυχαιο salt ανα χρηστη).
+-- Δοκιμαστικοι κωδικοι: gramm1 / gramm123, gramm2 / gramm456, καθηγητες: prof123, φοιτητες: stud123
 INSERT INTO users (id, username, password_hash, salt, name, surname, department_id, role) VALUES
     (1, 'gramm1',     'xZRtmqDrNQNtL3NzM/uywnHP1vz6qjhGPA3PKWTH8m8=', '8HAGFHJKxV5zNdU61kk1Pg==', 'Irini',    'Vlachou',    1, 'SECRETARY'),
     (2, 'gramm2',     '/RQeYyxzDUoZbFQVN9ENnHYugNh2L06kxiJlFatcYBE=', 'vLICfS0qr4B4JnVlAK57jA==', 'Petros',   'Antoniou',   2, 'SECRETARY');
@@ -141,7 +141,7 @@ INSERT INTO students (user_id, registration_number) VALUES
     (28, 21009),
     (29, 21010);
 
--- Τα DS202 και INF106 δεν έχουν καθηγητή, ώστε η γραμματεία να έχει κάτι να αναθέσει.
+-- Τα DS202 και INF106 δεν εχουν καθηγητη, ωστε η γραμματεια να εχει κατι να αναθεσει.
 INSERT INTO courses (id, course_code, course_name, ects, semester, department_id, professor_user_id) VALUES
     (100, 'INF101', 'Programmatismos sto Diadiktyo',      6, 5, 1, 10),
     (101, 'INF102', 'Vaseis Dedomenon',                   6, 4, 1, 11),
@@ -155,8 +155,8 @@ INSERT INTO courses (id, course_code, course_name, ects, semester, department_id
     (109, 'DS210',  'Asfaleia Systimaton',                5, 7, 2, 12),
     (110, 'MATH201','Pithanotites kai Statistiki',        5, 2, 3, 13);
 
--- Κάθε καθηγητής έχει τουλάχιστον ένα μάθημα με βαθμούς και ένα με φοιτητές που περιμένουν βαθμό.
--- Η christina.g (29) δεν έχει ακόμα κανέναν βαθμό.
+-- Καθε καθηγητης εχει τουλαχιστον ενα μαθημα με βαθμους και ενα με φοιτητες που περιμενουν βαθμο.
+-- Η christina.g (29) δεν εχει ακομα κανεναν βαθμο.
 INSERT INTO enrollments (student_user_id, course_id) VALUES
     (20, 100), (20, 101), (20, 102), (20, 106), (20, 107), (20, 108),
     (21, 100), (21, 101), (21, 107), (21, 108), (21, 110),
@@ -180,7 +180,7 @@ INSERT INTO grades (student_user_id, course_id, grade_value) VALUES
     (27, 107, 4.00),
     (28, 109, 8.50);
 
--- Οι μετρητές των id συνεχίζουν μετά το μεγαλύτερο id που υπάρχει
+-- Οι μετρητες των id συνεχιζουν μετα το μεγαλυτερο id που υπαρχει
 SELECT setval('departments_id_seq', (SELECT MAX(id) FROM departments));
 SELECT setval('users_id_seq',       (SELECT MAX(id) FROM users));
 SELECT setval('courses_id_seq',     (SELECT MAX(id) FROM courses));

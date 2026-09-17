@@ -22,7 +22,7 @@ public class UserRepository
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    // Βρίσκει τον χρήστη μόνο με το username. Ο έλεγχος του κωδικού γίνεται στο AuthService.
+    // Βρισκει τον χρηστη μονο με το username. Ο ελεγχος του κωδικου γινεται στο AuthService.
     public Optional<Users> findByUsername(String username)
     {
         return jdbcTemplate.query("""
@@ -42,28 +42,28 @@ public class UserRepository
                 .findFirst();
     }
 
-    // Χρησιμοποιείται ήδη αυτό το username;
+    // Χρησιμοποιειται ηδη αυτο το username;
     public boolean existsByUsername(String username)
     {
         Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM users WHERE username = ?", Integer.class, username);
         return count > 0;
     }
 
-    // Υπάρχει ήδη φοιτητής με αυτόν τον αριθμό μητρώου;
+    // Υπαρχει ηδη φοιτητης με αυτον τον αριθμο μητρωου;
     public boolean existsRegistrationNumber(int registrationNumber)
     {
         Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM students WHERE registration_number = ?", Integer.class, registrationNumber);
         return count > 0;
     }
 
-    // Υπάρχει ήδη καθηγητής με αυτόν τον κωδικό;
+    // Υπαρχει ηδη καθηγητης με αυτον τον κωδικο;
     public boolean existsProfessorId(String professorId)
     {
         Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM professors WHERE professor_id = ?", Integer.class, professorId);
         return count > 0;
     }
 
-    // Προσθέτει νέο χρήστη και επιστρέφει το id που του έδωσε η βάση
+    // Προσθετει νεο χρηστη και επιστρεφει το id που του εδωσε η βαση
     public Long insertUser(String username, String passwordHash, String salt, String name, String surname, Long departmentId, String role)
     {
         return jdbcTemplate.queryForObject("""

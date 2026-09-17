@@ -26,15 +26,15 @@ public class GradeService
         this.courseService = courseService;
     }
 
-    // ---------- Φοιτητές ----------
+    // ---------- Φοιτητες ----------
 
-    // Όλοι οι βαθμοί ενός φοιτητή
+    // Ολοι οι βαθμοι ενος φοιτητη
     public List<Grades> findStudentGrades(Long studentUserId)
     {
         return gradeRepository.findByStudent(studentUserId);
     }
 
-    // Χωρίζει τους βαθμούς σε ομάδες, μία για κάθε εξάμηνο που έχει βαθμούς
+    // Χωριζει τους βαθμους σε ομαδες, μια για καθε εξαμηνο που εχει βαθμους
     public List<SemesterGrades> groupBySemester(List<Grades> grades)
     {
         List<SemesterGrades> result = new ArrayList<>();
@@ -59,29 +59,29 @@ public class GradeService
         return result;
     }
 
-    // Συνολικά στοιχεία (μέσος όρος, ECTS, επιτυχόντα μαθήματα)
+    // Συνολικα στοιχεια (μεσος ορος, ECTS, επιτυχοντα μαθηματα)
     public GradeSummary summarize(List<Grades> grades)
     {
         return new GradeSummary(grades);
     }
 
-    // ---------- Καθηγητές ----------
+    // ---------- Καθηγητες ----------
 
-    // Οι βαθμοί όλων των φοιτητών σε ένα μάθημα
+    // Οι βαθμοι ολων των φοιτητων σε ενα μαθημα
     public List<Grades> findCourseGrades(Long courseId)
     {
         return gradeRepository.findByCourse(courseId);
     }
 
-    // Οι φοιτητές ενός μαθήματος που δεν έχουν βαθμό ακόμα
+    // Οι φοιτητες ενος μαθηματος που δεν εχουν βαθμο ακομα
     public List<Students> findStudentsToGrade(Long courseId)
     {
         return gradeRepository.findUngradedStudents(courseId);
     }
 
-    // Καταχωρεί τους βαθμούς ενός μαθήματος και επιστρέφει πόσοι βαθμοί αποθηκεύτηκαν.
-    // Αν κάτι δεν είναι σωστό πετάει IllegalArgumentException με μήνυμα για τον χρήστη
-    // και δεν αποθηκεύεται κανένας βαθμός (@Transactional).
+    // Καταχωρει τους βαθμους ενος μαθηματος και επιστρεφει ποσοι βαθμοι αποθηκευτηκαν.
+    // Αν κατι δεν ειναι σωστο πεταει IllegalArgumentException με μηνυμα για τον χρηστη
+    // και δεν αποθηκευεται κανενας βαθμος (@Transactional).
     @Transactional
     public int saveGrades(Long professorUserId, Long courseId, Long[] studentIds, String[] grades)
     {
@@ -95,10 +95,10 @@ public class GradeService
             throw new IllegalArgumentException("Δεν υπάρχουν φοιτητές προς βαθμολόγηση.");
         }
 
-        // Επιτρέπεται βαθμός μόνο για φοιτητές που είναι εγγεγραμμένοι και δεν έχουν ακόμα βαθμό
+        // Επιτρεπεται βαθμος μονο για φοιτητες που ειναι εγγεγραμμενοι και δεν εχουν ακομα βαθμο
         List<Students> ungradedStudents = gradeRepository.findUngradedStudents(courseId);
 
-        // 1ο βήμα: έλεγχος όλων των βαθμών πριν αποθηκευτεί οτιδήποτε
+        // 1ο βημα: ελεγχος ολων των βαθμων πριν αποθηκευτει οτιδηποτε
         List<Long> idsToSave = new ArrayList<>();
         List<Double> valuesToSave = new ArrayList<>();
 
@@ -110,7 +110,7 @@ public class GradeService
                 text = grades[i].trim();
             }
 
-            // Κενό πεδίο: ο φοιτητής μένει χωρίς βαθμό προς το παρόν
+            // Κενο πεδιο: ο φοιτητης μενει χωρις βαθμο προς το παρον
             if (text.isEmpty())
             {
                 continue;
@@ -131,7 +131,7 @@ public class GradeService
                 throw new IllegalArgumentException("Μη έγκυρος βαθμός: " + text);
             }
 
-            // Γραμμένο έτσι ώστε να απορρίπτονται και οι "ειδικές" τιμές όπως NaN
+            // Γραμμενο ετσι ωστε να απορριπτονται και οι "ειδικες" τιμες οπως NaN
             if (!(value >= 0 && value <= 10))
             {
                 throw new IllegalArgumentException("Ο βαθμός πρέπει να είναι από 0 έως 10.");
@@ -146,7 +146,7 @@ public class GradeService
             throw new IllegalArgumentException("Δεν συμπληρώσατε κανέναν βαθμό.");
         }
 
-        // 2ο βήμα: αποθήκευση
+        // 2ο βημα: αποθηκευση
         for (int i = 0; i < idsToSave.size(); i++)
         {
             gradeRepository.insert(idsToSave.get(i), courseId, valuesToSave.get(i));
@@ -155,7 +155,7 @@ public class GradeService
         return idsToSave.size();
     }
 
-    // Ελέγχει αν ο φοιτητής υπάρχει στη λίστα
+    // Ελεγχει αν ο φοιτητης υπαρχει στη λιστα
     private boolean isInList(Long studentId, List<Students> students)
     {
         for (Students student : students)

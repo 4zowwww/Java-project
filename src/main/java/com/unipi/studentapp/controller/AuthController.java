@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-// Σύνδεση και αποσύνδεση για όλες τις κατηγορίες χρηστών
+// Συνδεση και αποσυνδεση για ολες τις κατηγοριες χρηστων
 @Controller
 public class AuthController
 {
@@ -32,21 +32,21 @@ public class AuthController
             return "redirect:/index.html?error=1";
         }
 
-        // Νέο session id μετά τη σύνδεση, ώστε ένα id που υπήρχε πριν το login να μην μπορεί
-        // να χρησιμοποιηθεί από κάποιον άλλον (προστασία από "session fixation")
+        // Νεο session id μετα τη συνδεση, ωστε ενα id που υπηρχε πριν το login να μην μπορει
+        // να χρησιμοποιηθει απο καποιον αλλον (προστασια απο "session fixation")
         request.changeSessionId();
 
-        // Μετά τη σύνδεση η αρχική σελίδα δείχνει το μενού της κατηγορίας του χρήστη
+        // Μετα τη συνδεση η αρχικη σελιδα δειχνει το μενου της κατηγοριας του χρηστη
         return "redirect:/index.html";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session, HttpServletResponse response)
     {
-        // Ο browser διαγράφει ό,τι έχει αποθηκευμένο στην cache για την εφαρμογή
+        // Ο browser διαγραφει ο,τι εχει αποθηκευμενο στην cache για την εφαρμογη
         response.setHeader("Clear-Site-Data", "\"cache\"");
 
-        // Διαγραφή του session (invalidate)
+        // Διαγραφη του session (invalidate)
         authService.logout(session);
 
         return "redirect:/index.html?logout=1";

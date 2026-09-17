@@ -2,7 +2,7 @@ package com.unipi.studentapp.model;
 
 import java.util.List;
 
-// Οι βαθμοί ενός φοιτητή σε ένα εξάμηνο
+// Οι βαθμοι ενος φοιτητη σε ενα εξαμηνο
 public class SemesterGrades
 {
 
@@ -26,7 +26,7 @@ public class SemesterGrades
         return grades;
     }
 
-    // Μέσος όρος, ECTS κλπ. μόνο για αυτό το εξάμηνο
+    // Μεσος ορος, ECTS κλπ. μονο για αυτο το εξαμηνο
     public GradeSummary getSummary()
     {
         return new GradeSummary(grades);

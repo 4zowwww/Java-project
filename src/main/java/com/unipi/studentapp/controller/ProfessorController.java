@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-// Λειτουργίες Καθηγητών
+// Λειτουργιες Καθηγητων
 @Controller
 @RequestMapping("/professor")
 public class ProfessorController
@@ -31,7 +31,7 @@ public class ProfessorController
         this.gradeService = gradeService;
     }
 
-    // Λίστα βαθμολογίας ανά μάθημα (για μαθήματα που έχουν ήδη βαθμολογηθεί)
+    // Λιστα βαθμολογιας ανα μαθημα (για μαθηματα που εχουν ηδη βαθμολογηθει)
     @GetMapping("/grades")
     public String grades(@RequestParam(required = false) Long courseId, HttpSession session, Model model)
     {
@@ -40,7 +40,7 @@ public class ProfessorController
         model.addAttribute("user", user);
         model.addAttribute("courses", courseService.findGradedCourses(user.getId()));
 
-        // Αν έχει επιλεγεί μάθημα, εμφανίζονται και οι βαθμοί του
+        // Αν εχει επιλεγει μαθημα, εμφανιζονται και οι βαθμοι του
         if (courseId != null)
         {
             Courses course = courseService.findProfessorCourse(user.getId(), courseId);
@@ -58,7 +58,7 @@ public class ProfessorController
         return "professor/grades";
     }
 
-    // Φόρμα καταχώρησης βαθμολογίας (για μαθήματα με φοιτητές χωρίς βαθμό)
+    // Φορμα καταχωρησης βαθμολογιας (για μαθηματα με φοιτητες χωρις βαθμο)
     @GetMapping("/enter-grades")
     public String enterGradesForm(@RequestParam(required = false) Long courseId, HttpSession session, Model model)
     {
@@ -67,7 +67,7 @@ public class ProfessorController
         return "professor/enter-grades";
     }
 
-    // Αποθήκευση των βαθμών που συμπληρώθηκαν στη φόρμα
+    // Αποθηκευση των βαθμων που συμπληρωθηκαν στη φορμα
     @PostMapping("/enter-grades")
     public String enterGrades(@RequestParam(required = false) Long courseId, @RequestParam(required = false) Long[] studentIds, @RequestParam(required = false) String[] grades, HttpSession session, Model model)
     {
@@ -87,7 +87,7 @@ public class ProfessorController
         return "professor/enter-grades";
     }
 
-    // Γεμίζει τα δεδομένα της σελίδας καταχώρησης (κοινό για GET και POST)
+    // Γεμιζει τα δεδομενα της σελιδας καταχωρησης (κοινο για GET και POST)
     private void fillEnterGradesPage(Users user, Long courseId, Model model)
     {
         model.addAttribute("user", user);

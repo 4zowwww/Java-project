@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
-// Λειτουργίες Φοιτητών
+// Λειτουργιες Φοιτητων
 @Controller
 @RequestMapping("/student")
 public class StudentController
@@ -28,7 +28,7 @@ public class StudentController
         this.gradeService = gradeService;
     }
 
-    // Βαθμολογία ανά μάθημα
+    // Βαθμολογια ανα μαθημα
     @GetMapping("/grades")
     public String grades(HttpSession session, Model model)
     {
@@ -39,7 +39,7 @@ public class StudentController
         return "student/grades";
     }
 
-    // Βαθμολογία ανά εξάμηνο
+    // Βαθμολογια ανα εξαμηνο
     @GetMapping("/grades-by-semester")
     public String gradesBySemester(HttpSession session, Model model)
     {
@@ -51,7 +51,7 @@ public class StudentController
         return "student/grades-by-semester";
     }
 
-    // Συνολική βαθμολογία (όλα τα μαθήματα που έχει εξεταστεί)
+    // Συνολικη βαθμολογια (ολα τα μαθηματα που εχει εξεταστει)
     @GetMapping("/summary")
     public String summary(HttpSession session, Model model)
     {

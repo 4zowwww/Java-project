@@ -9,19 +9,19 @@ import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-// Κρυπτογράφηση κωδικών (hashed + salted) με τον αλγόριθμο PBKDF2 (HmacSHA256).
-// Στη βάση δεν αποθηκεύεται ποτέ ο πραγματικός κωδικός, μόνο το hash και το salt.
+// Κρυπτογραφηση κωδικων (hashed + salted) με τον αλγοριθμο PBKDF2 (HmacSHA256).
+// Στη βαση δεν αποθηκευεται ποτε ο πραγματικος κωδικος, μονο το hash και το salt.
 @Service
 public class PasswordService
 {
 
-    // Πόσες φορές επαναλαμβάνεται ο υπολογισμός (όσο περισσότερες, τόσο πιο δύσκολο το "σπάσιμο")
+    // Ποσες φορες επαναλαμβανεται ο υπολογισμος (οσο περισσοτερες, τοσο πιο δυσκολο το "σπασιμο")
     private static final int ITERATIONS = 65536;
 
-    // Μέγεθος του hash σε bits
+    // Μεγεθος του hash σε bits
     private static final int KEY_LENGTH = 256;
 
-    // Δημιουργεί ένα τυχαίο salt (16 bytes) για κάθε χρήστη
+    // Δημιουργει ενα τυχαιο salt (16 bytes) για καθε χρηστη
     public String generateSalt()
     {
         byte[] salt = new byte[16];
@@ -29,7 +29,7 @@ public class PasswordService
         return Base64.getEncoder().encodeToString(salt);
     }
 
-    // Υπολογίζει το hash του κωδικού μαζί με το salt του χρήστη
+    // Υπολογιζει το hash του κωδικου μαζι με το salt του χρηστη
     public String hash(String password, String salt)
     {
         try
@@ -45,12 +45,12 @@ public class PasswordService
         }
     }
 
-    // Ελέγχει αν ο κωδικός που πληκτρολόγησε ο χρήστης ταιριάζει με το αποθηκευμένο hash
+    // Ελεγχει αν ο κωδικος που πληκτρολογησε ο χρηστης ταιριαζει με το αποθηκευμενο hash
     public boolean matches(String password, String salt, String storedHash)
     {
         String newHash = hash(password, salt);
 
-        // Σύγκριση σε σταθερό χρόνο, ώστε να μην "προδίδεται" από τον χρόνο απόκρισης πόσο κοντά ήταν ο κωδικός
+        // Συγκριση σε σταθερο χρονο, ωστε να μην "προδιδεται" απο τον χρονο αποκρισης ποσο κοντα ηταν ο κωδικος
         return MessageDigest.isEqual(newHash.getBytes(), storedHash.getBytes());
     }
 }

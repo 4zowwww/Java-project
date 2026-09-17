@@ -13,8 +13,8 @@ import java.util.Optional;
 public class CourseRepository
 {
 
-    // Κοινό SELECT για όλες τις αναζητήσεις μαθημάτων (μαζί με τον υπεύθυνο καθηγητή, αν υπάρχει).
-    // Κάθε μέθοδος προσθέτει στο τέλος το δικό της WHERE / ORDER BY.
+    // Κοινο SELECT για ολες τις αναζητησεις μαθηματων (μαζι με τον υπευθυνο καθηγητη, αν υπαρχει).
+    // Καθε μεθοδος προσθετει στο τελος το δικο της WHERE / ORDER BY.
     private static final String SELECT_COURSES = """
             SELECT c.id, c.course_code, c.course_name, c.ects, c.semester,
                    cd.name      AS course_department,
@@ -55,7 +55,7 @@ public class CourseRepository
                 .findFirst();
     }
 
-    // Τα μαθήματα του καθηγητή που έχουν τουλάχιστον έναν βαθμό
+    // Τα μαθηματα του καθηγητη που εχουν τουλαχιστον εναν βαθμο
     public List<Courses> findGradedByProfessor(Long professorUserId)
     {
         return jdbcTemplate.query(SELECT_COURSES + """
@@ -65,7 +65,7 @@ public class CourseRepository
                 """, courseRowMapper(), professorUserId);
     }
 
-    // Τα μαθήματα του καθηγητή που έχουν εγγεγραμμένους φοιτητές χωρίς βαθμό
+    // Τα μαθηματα του καθηγητη που εχουν εγγεγραμμενους φοιτητες χωρις βαθμο
     public List<Courses> findToGradeByProfessor(Long professorUserId)
     {
         return jdbcTemplate.query(SELECT_COURSES + """
@@ -88,14 +88,14 @@ public class CourseRepository
                 """, professorUserId, courseId);
     }
 
-    // Υπάρχει ήδη μάθημα με αυτόν τον κωδικό;
+    // Υπαρχει ηδη μαθημα με αυτον τον κωδικο;
     public boolean existsByCode(String courseCode)
     {
         Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM courses WHERE course_code = ?", Integer.class, courseCode);
         return count > 0;
     }
 
-    // Νέο μάθημα (ο καθηγητής μπορεί να είναι null)
+    // Νεο μαθημα (ο καθηγητης μπορει να ειναι null)
     public void insert(String courseCode, String courseName, int ects, int semester, Long departmentId, Long professorUserId)
     {
         jdbcTemplate.update("""
@@ -104,14 +104,14 @@ public class CourseRepository
                 """, courseCode, courseName, ects, semester, departmentId, professorUserId);
     }
 
-    // Είναι ο φοιτητής ήδη εγγεγραμμένος στο μάθημα;
+    // Ειναι ο φοιτητης ηδη εγγεγραμμενος στο μαθημα;
     public boolean isEnrolled(Long studentUserId, Long courseId)
     {
         Integer count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM enrollments WHERE student_user_id = ? AND course_id = ?", Integer.class, studentUserId, courseId);
         return count > 0;
     }
 
-    // Εγγραφή φοιτητή σε μάθημα (δηλαδή στη λίστα φοιτητών προς βαθμολόγηση)
+    // Εγγραφη φοιτητη σε μαθημα (δηλαδη στη λιστα φοιτητων προς βαθμολογηση)
     public void enroll(Long studentUserId, Long courseId)
     {
         jdbcTemplate.update("INSERT INTO enrollments (student_user_id, course_id) VALUES (?, ?)", studentUserId, courseId);
